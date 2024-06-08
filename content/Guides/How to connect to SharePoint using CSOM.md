@@ -1,8 +1,7 @@
 ---
-tags:
-- net6
+title: 📕 How to connect to SharePoint using CSOM
 ---
-# 📕 How to connect to SharePoint using CSOM
+
 > [!info]
 > This document describes how to connect to a [[SharePoint]] library using [[CSOM]]. There are 2 ways to connect to a SharePoint library. [[#SharePoint app-only]] and [[#Azure AD app-only]].
 ## 📖 Instructions
@@ -43,7 +42,7 @@ tags:
 > When still having issues connecting to the library, use following instructions. This issue has something to do with a legacy component be turned off (see [[#📋 Related articles]]).
 
 1. Install the latest version of [SharePoint Online Management Shell](https://www.microsoft.com/en-us/download/details.aspx?id=35588).
-2. Open a [[Windows PowerShell]] prompt.
+2. Open a [[PowerShell|Windows PowerShell]] prompt.
 3. Connect to the [[SharePoint]] instance using
 	```powershell
 	$sharepointSite = "{{Admin URL of the SharePoint Site}}"
