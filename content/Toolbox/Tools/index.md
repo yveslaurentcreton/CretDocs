@@ -1,3 +1,6 @@
+---
+title: Tools
+---
 ## Introduction
 
 This page lists various utility tools that can help enhance productivity and streamline different tasks. These tools cover a range of functionalities, from system monitoring and management to code development and debugging.
