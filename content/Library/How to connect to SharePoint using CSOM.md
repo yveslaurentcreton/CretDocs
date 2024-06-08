@@ -1,5 +1,8 @@
 ---
 title: 📕 How to connect to SharePoint using CSOM
+tags:
+- manual
+- guide
 ---
 
 > [!info]
