@@ -1,8 +1,6 @@
 ---
 tags:
 - net6
-- sharepoint
-- csom
 ---
 # 📕 How to connect to SharePoint using CSOM
 > [!info]
