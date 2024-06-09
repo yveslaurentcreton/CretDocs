@@ -5,7 +5,7 @@
 | Bogus            | A simple and sane fake data generator for .NET.                                                                        | [Bogus](https://www.nuget.org/packages/Bogus/)                       |
 | CsvHelper        | Library to help reading and writing CSV files.                                                                         | [CsvHelper](https://www.nuget.org/packages/CsvHelper/)               |
 | Dapper           | A simple object mapper for .NET.                                                                                       | [Dapper](https://www.nuget.org/packages/Dapper/)                     |
-| DotNetJet        | A collection of powerful, open-source packages designed to enhance and streamline your .NET development experience.    | [DotNetJet](https://www.nuget.org/packages/DotNetJet)                                                            |
+| DotNetJet        | A collection of powerful, open-source packages designed to enhance and streamline your .NET development experience.    | [DotNetJet](https://www.nuget.org/packages/DotNetJet)                |
 | FluentValidation | A small validation library for .NET that uses a fluent interface and lambda expressions for building validation rules. | [FluentValidation](https://www.nuget.org/packages/FluentValidation/) |
 | Fluxor           | A zero boilerplate Flux/Redux library for Blazor.                                                                      | [Fluxor](https://www.nuget.org/packages/Fluxor/)                     |
 | IsoNames         | A library to handle ISO country, currency, and language codes.                                                         | [IsoNames](https://www.nuget.org/packages/IsoNames/)                 |
