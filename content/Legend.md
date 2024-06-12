@@ -10,4 +10,4 @@ This page provides a guide to the placeholder notation used throughout the site.
 
 |Placeholder Notation|Description|
 |---|---|
-|`{{ }}`|Indicates a variable that needs to be replaced with actual data specific to your context.|
+|`<variable-name>`|Indicates a variable that needs to be replaced with actual data specific to your context.|

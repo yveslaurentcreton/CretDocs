@@ -7,10 +7,12 @@ tags:
 
 > [!info]
 > This document describes how to connect to a [[SharePoint]] library using [[CSOM]]. There are 2 ways to connect to a SharePoint library. [[#SharePoint app-only]] and [[#Azure AD app-only]].
+> 
 ## 📖 Instructions
 ### SharePoint app-only
 #### 1. Create a new app-only principal
-1. Navigate to `{{Normal URL of the SharePoint Site}}/_layouts/15/appregnew.aspx`.
+
+1. Navigate to `<normal-sharepoint-site-url>/_layouts/15/appregnew.aspx`.
 2. Enter the following values:
 
 | Property      | Value                                                   |
@@ -24,7 +26,7 @@ tags:
 3. Click on `Create`.
 
 #### 2. Add the permissions to the created app-only principal
-1. Navigate to `{{Admin URL of the SharePoint Site}}/_layouts/15/appinv.aspx`
+1. Navigate to `<admin-sharepoint-site-url>/_layouts/15/appinv.aspx`
 2. Enter the `App Id` (Client id from the previous step).
 3. Click on `Lookup`.
 4. Enter the `Permission Request XML`
@@ -39,7 +41,7 @@ tags:
 #### 3. Extra
 > [!info]
 > To list the apps, use:
-> `{{Admin URL of the SharePoint Site}}/_layouts/15/AppPrincipals.aspx`
+> `<admin-sharepoint-site-url>/_layouts/15/AppPrincipals.aspx`
 
 > [!warning]
 > When still having issues connecting to the library, use following instructions. This issue has something to do with a legacy component be turned off (see [[#📋 Related articles]]).
@@ -48,7 +50,7 @@ tags:
 2. Open a [[PowerShell|Windows PowerShell]] prompt.
 3. Connect to the [[SharePoint]] instance using
 	```powershell
-	$sharepointSite = "{{Admin URL of the SharePoint Site}}"
+	$sharepointSite = "<admin-sharepoint-site-url>"
 	Connect-SPOService -Url $sharepointSite
 	```
 4. Enter the credentials of an administrator.
@@ -58,6 +60,7 @@ tags:
 	```
 
 ### Renew secret
+
 To renew the secret, use the following powershell script:
 ```powershell
 $appId = ""
@@ -75,6 +78,7 @@ New-AzADSpCredential -ObjectId $App.Id -StartDate $StartDate -EndDate $EndDate
 ```
 
 The secret can be found in the output.
+
 ### Azure AD app-only
 
 ## 📋 Related articles

@@ -35,7 +35,7 @@ This command will display output similar to the following:
 To remove a specific .NET SDK version, use the rm command followed by the path of the SDK version you want to delete. Here’s the general format:
 
 ```sh
-sudo rm -rf /usr/local/share/dotnet/sdk/<version_number>
+sudo rm -rf /usr/local/share/dotnet/sdk/<version-number>
 ```
 
 For example, to remove the .NET SDK version 7.0.304, run:
@@ -92,7 +92,7 @@ Microsoft.NETCore.App 8.0.6 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
 To remove a specific .NET runtime version, use the rm command followed by the path of the runtime version you want to delete. Here’s the general format:
 
 ```sh
-sudo rm -rf /usr/local/share/dotnet/shared/<runtime_name>/<version_number>
+sudo rm -rf /usr/local/share/dotnet/shared/<runtime-name>/<version-number>
 ```
 
 For example, to remove the .NET runtime version Microsoft.AspNetCore.App 7.0.3, run:
