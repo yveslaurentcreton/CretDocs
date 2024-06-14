@@ -9,6 +9,7 @@ Welcome to **DocsJet**, a collection of my personal notes, manuals and guides. T
 Explore the various sections of DocsJet to find valuable information on different topics:
 
 - **[[_Library|Library]]:** A collection of articles, tutorials, and references.
+- **[[_Templates|Templates]]:** Standardized templates for consistent project setup and configuration.
 - **Toolbox**
 	- **[[_Technologies|Technologies]]:** Information on various technologies.
 	- **[[_Tools|Tools]]:** A list of utility tools to enhance productivity.
