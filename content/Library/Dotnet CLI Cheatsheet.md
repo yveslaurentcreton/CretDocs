@@ -41,7 +41,8 @@ tags:
 | Action                          | Code                                                    |
 | ------------------------------- | ------------------------------------------------------- |
 | Add a package to a project      | `dotnet add package <package-name>`                     |
-| Remove a package from a project | `dotnet remove package <package-name>`                  |
 | Update a package in a project   | `dotnet add package <package-name> --version <version>` |
+| Remove a package from a project | `dotnet remove package <package-name>`                  |
+| Clear local cache               | `dotnet nuget locals all --clear`                       |
 
 ## 📋 Related articles
