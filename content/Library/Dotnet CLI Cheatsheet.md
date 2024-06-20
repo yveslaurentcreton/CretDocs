@@ -20,6 +20,9 @@ tags:
 | List installed runtimes  | `dotnet --list-runtimes`                   |
 | Install a .NET tool      | `dotnet tool install --global <tool-name>` |
 | Install EF Core globally | `dotnet tool install --global dotnet-ef`   |
+| List available workloads | `dotnet workload search`                   |
+| List installed workloads | `dotnet workload list`                     |
+| Add workload             | `dotnet workload install <workload-id>`    |
 
 ### Development
 
