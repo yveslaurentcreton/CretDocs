@@ -3,6 +3,7 @@
 | Package Name     | Description                                                                                                            | Link                                                                 |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | Bogus            | A simple and sane fake data generator for .NET.                                                                        | [Bogus](https://www.nuget.org/packages/Bogus/)                       |
+| Castle.Core      | A set of tools to assist in building dynamic proxies, dependency injection containers, and other utilities.            | [Castle.Core](https://www.nuget.org/packages/Castle.Core/)           |
 | CsvHelper        | Library to help reading and writing CSV files.                                                                         | [CsvHelper](https://www.nuget.org/packages/CsvHelper/)               |
 | Dapper           | A simple object mapper for .NET.                                                                                       | [Dapper](https://www.nuget.org/packages/Dapper/)                     |
 | DotNetJet        | A collection of powerful, open-source packages designed to enhance and streamline your .NET development experience.    | [DotNetJet](https://www.nuget.org/packages/DotNetJet)                |
@@ -18,5 +19,6 @@
 | NServiceBus      | The most popular service bus for .NET, used for building distributed systems.                                          | [NServiceBus](https://www.nuget.org/packages/NServiceBus/)           |
 | NSubstitute      | A friendly substitute for .NET mocking libraries.                                                                      | [NSubstitute](https://www.nuget.org/packages/NSubstitute/)           |
 | Refit            | The automatic type-safe REST library for .NET Core, Xamarin, and .NET.                                                 | [Refit](https://www.nuget.org/packages/Refit/)                       |
+| Scrutor          | Extensions for Microsoft.Extensions.DependencyInjection to add assembly scanning and decoration support.               | [Scrutor](https://www.nuget.org/packages/Scrutor/)                   |
 | Serilog          | A diagnostic logging library for .NET applications.                                                                    | [Serilog](https://www.nuget.org/packages/Serilog/)                   |
 | xUnit            | A free, open-source, community-focused unit testing tool for the .NET Framework.                                       | [xUnit](https://www.nuget.org/packages/xunit/)                       |
