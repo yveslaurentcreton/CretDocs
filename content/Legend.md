@@ -2,8 +2,6 @@
 title: 📘 Legend
 ---
 
-## Introduction
-
 > [!info]
 > This page provides a guide to the placeholder notation used throughout the site. These placeholders help indicate where specific data or variables need to be inserted.
 

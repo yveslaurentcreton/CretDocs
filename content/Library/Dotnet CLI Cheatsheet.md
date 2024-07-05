@@ -23,15 +23,18 @@ tags:
 | List available workloads | `dotnet workload search`                   |
 | List installed workloads | `dotnet workload list`                     |
 | Add workload             | `dotnet workload install <workload-id>`    |
+| Update all workloads     | `dotnet workload update`                   | 
 
 ### Development
 
-| Action                       | Code                    |
-| ---------------------------- | ----------------------- |
-| Create a new project         | `dotnet new <template>` |
-| Restore project dependencies | `dotnet restore`        |
-| Build a project              | `dotnet build`          |
-| Run a project                | `dotnet run`            |
+| Action                       | Code                            |
+| ---------------------------- | ------------------------------- |
+| List available templates     | `dotnet new list`               |
+| Install template             | `dotnet new install <template>` |
+| Create a new project         | `dotnet new <template>`         |
+| Restore project dependencies | `dotnet restore`                |
+| Build a project              | `dotnet build`                  |
+| Run a project                | `dotnet run`                    |
 
 ### Deployment
 
