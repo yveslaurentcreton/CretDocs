@@ -17,3 +17,4 @@ Explore the various sections of DocsJet to find valuable information on differen
 	- **[[Google Chrome Extensions]]:** Extensions to enhance Google Chrome.
 	- **[[NuGet Packages]]:** Useful NuGet packages for development.
 	- **[[PowerShell Modules]]:** Modules to extend PowerShell functionality.
+	- **[[Visual Studio Code Extensions]]:** Modules to extend enhance Visual Studio Code.

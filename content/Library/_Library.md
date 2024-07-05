@@ -15,7 +15,8 @@ This page provides detailed guides and manuals to help with various technical ta
 
 ## Cheatsheets
 
-| Cheatsheet                                     | Tags    |
-| ---------------------------------------------- | ------- |
-| [[Git Cheatsheet]]                             | [[Git]] |
-| [[Dotnet CLI Cheatsheet\|.NET CLI Cheatsheet]] | dotnet  | 
+| Cheatsheet                                     | Tags         |
+| ---------------------------------------------- | ------------ |
+| [[Git Cheatsheet]]                             | [[Git]]      |
+| [[Dotnet CLI Cheatsheet\|.NET CLI Cheatsheet]] | dotnet       |
+| [[Azure DevOps Cheatsheet]]                    | Azure DevOps | 
