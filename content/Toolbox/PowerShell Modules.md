@@ -1,8 +1,9 @@
 ## PowerShell Modules
 
-| Module Name | Description                                                                                                    | Link                                                      |
-| ----------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| PSJet       | A collection of powerful and efficient PowerShell scripts to help streamline your workflow and automate tasks. | [PSJet](https://www.powershellgallery.com/packages/PSJet) |
+| Module Name                                               | Description                                                                                                    |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| [PSJet](https://www.powershellgallery.com/packages/PSJet) | A collection of powerful and efficient PowerShell scripts to help streamline your workflow and automate tasks. |
+| Terminal-Icons                                            | A PowerShell module that adds file and folder icons to the terminal.                                           | 
 
 ## DSC Modules
 
