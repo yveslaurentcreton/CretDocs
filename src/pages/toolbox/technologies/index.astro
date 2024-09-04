@@ -1,0 +1,37 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+
+const technologies = await getCollection('technologies');
+---
+
+<StarlightPage frontmatter={{ title: 'Technologies' }}>
+
+This page lists various technologies, frameworks, and libraries that are essential for modern web and software development. These tools help in building robust, efficient, and scalable applications across different platforms.
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+
+  {
+    technologies
+      .sort((a, b) => a.data.name.toLowerCase().localeCompare(b.data.name.toLowerCase()))
+      .map((technology) => (
+      <tr>
+        <td>
+          {technology.data.render ? (
+            <a href={`./technologies/${technology.slug}`}>{technology.data.name}</a>
+          ) : (
+            technology.data.name
+          )}
+        </td>
+        <td>{technology.data.description}</td>
+      </tr>
+    ))
+  }
+
+</table>
+
+</StarlightPage>

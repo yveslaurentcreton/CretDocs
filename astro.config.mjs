@@ -11,16 +11,38 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
+					label: 'Introduction',
+					autogenerate: { directory: 'introduction' },
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Cheatsheets',
+					autogenerate: { directory: 'cheatsheets' },
 				},
+				{
+					label: 'Guides',
+					autogenerate: { directory: 'guides' },
+				},
+				{
+					label: 'Templates',
+					autogenerate: { directory: 'templates' },
+				},
+				{
+					label: 'Toolbox',
+					items: [
+						{
+							label: 'Powershell Modules',
+							link: 'toolbox/powershell-modules',
+						},
+						{
+							label: 'Technologies',
+							link: 'toolbox/technologies',
+						},
+						{
+							label: 'Tools',
+							link: 'toolbox/tools',
+						}
+					]
+				}
 			],
 		}),
 	],

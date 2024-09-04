@@ -1,0 +1,51 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+
+const powershellModules = await getCollection('powershellModules', ({ data }) => {
+  return data.type === 'pwsh';
+});
+const dscModules = await getCollection('powershellModules', ({ data }) => {
+  return data.type === 'dsc';
+});
+---
+
+<StarlightPage frontmatter={{ title: 'Powershell Modules' }}>
+
+<h2>Powershell Modules</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+
+  {
+    powershellModules.map((module) => (
+      <tr>
+        <td>{module.data.name}</td>
+        <td>{module.data.description}</td>
+      </tr>
+    ))
+  }
+
+</table>
+
+<h2>DSC Modules</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+
+  {
+    dscModules.map((module) => (
+      <tr>
+        <td>{module.data.name}</td>
+        <td>{module.data.description}</td>
+      </tr>
+    ))
+  }
+
+</table>
+
+</StarlightPage>
