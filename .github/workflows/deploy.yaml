@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: 20.17
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
       - name: Build
         run: astro check && astro build
       - name: Upload artifact
