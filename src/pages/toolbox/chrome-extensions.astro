@@ -1,0 +1,33 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+
+const chromeExtensions = await getCollection('chromeExtensions');
+---
+
+<StarlightPage frontmatter={{ title: 'Google Chrome Extensions' }}>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+
+  {
+    chromeExtensions.map((extension) => (
+      <tr>
+        <td>
+          {extension.data.link ? (
+            <a href={extension.data.link} target="_blank">{extension.data.name}</a>
+          ) : (
+          extension.data.name
+          )}
+        </td>
+        <td>{extension.data.description}</td>
+      </tr>
+    ))
+  }
+
+</table>
+
+</StarlightPage>
