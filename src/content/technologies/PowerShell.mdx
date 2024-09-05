@@ -4,6 +4,8 @@ description: A task automation and configuration management framework from Micro
 render: true
 ---
 
+import { Icon } from '@astrojs/starlight/components';
+
 ## Introduction
 
 PowerShell is a task automation and configuration management framework from Microsoft, consisting of a command-line shell and the associated scripting language. Initially exclusive to Windows, PowerShell has evolved to support cross-platform usage on Windows, macOS, and Linux. The development and enhancement of PowerShell over the years have resulted in distinct versions, each bringing new features and improvements.
@@ -12,13 +14,13 @@ PowerShell is a task automation and configuration management framework from Micr
 
 Below is an overview of the different versions of PowerShell, their names, and their compatibility with Windows, macOS, and Linux.
 
-|Version Range|Name|Windows Compatibility|macOS Compatibility|Linux Compatibility|
+|Version|Name|<Icon name="seti:windows" size="1.5rem" />|<Icon name="apple" size="1.5rem" />|<Icon name="linux" size="1.5rem" />|
 |---|---|---|---|---|
-|1.0 - 5.1|Windows PowerShell|Yes|No|No|
-|6.0 - 6.2|PowerShell Core|Yes|Yes|Yes|
-|7.0 and beyond|PowerShell|Yes|Yes|Yes|
+|1.0 - 5.1|Windows PowerShell|<Icon name="approve-check" color="green" />|<Icon name="close" color="red" />|<Icon name="close" color="red" />|
+|6.0 - 6.2|PowerShell Core|<Icon name="approve-check" color="green" />|<Icon name="approve-check" color="green" />|<Icon name="approve-check" color="green" />|
+|7.0 and beyond|PowerShell|<Icon name="approve-check" color="green" />|<Icon name="approve-check" color="green" />|<Icon name="approve-check" color="green" />|
 
-### Notes:
+### Notes
 
 - **Windows PowerShell (1.0 - 5.1):** These versions are preinstalled on Windows and are exclusive to the Windows operating system.
 - **PowerShell Core (6.0 - 6.2):** Introduced cross-platform support, running on Windows, macOS, and Linux. This marked a significant shift in making PowerShell a versatile tool beyond just the Windows environment.

@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const vscodeExtensions = await getCollection('vscodeExtensions');
 ---
 
-<StarlightPage frontmatter={{ title: 'Visual Studio Code Extensions' }}>
+<StarlightPage frontmatter={{ title: 'Visual Studio Code Extensions', tableOfContents: false }}>
 
 <table>
   <tr>

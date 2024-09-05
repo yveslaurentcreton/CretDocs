@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const nugetPackages = await getCollection('nugetPackages');
 ---
 
-<StarlightPage frontmatter={{ title: 'NuGet Packages' }}>
+<StarlightPage frontmatter={{ title: 'NuGet Packages', tableOfContents: false }}>
 
 <table>
   <tr>

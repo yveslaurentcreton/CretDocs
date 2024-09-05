@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const chromeExtensions = await getCollection('chromeExtensions');
 ---
 
-<StarlightPage frontmatter={{ title: 'Google Chrome Extensions' }}>
+<StarlightPage frontmatter={{ title: 'Google Chrome Extensions', tableOfContents: false }}>
 
 <table>
   <tr>

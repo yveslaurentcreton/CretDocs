@@ -19,20 +19,12 @@ Setting up a consistent project structure is crucial for maintainability and col
 In the root of your .NET project, the following files should be present:
 
 <FileTree>
-- YourProjectRoot
-	- YourSolution.sln(x)
+- Root
+	- Solution.sln(x)
 	- global.json
 	- Directory.Build.props
 	- nuget.config
 </FileTree>
-
-```
-📁 YourProjectRoot
-├── YourSolution.sln or YourSolution.slnx
-├── global.json
-├── Directory.Build.props
-└── nuget.config
-```
 
 ### Solution File
 
@@ -130,7 +122,7 @@ This file specifies the package sources for NuGet, ensuring that all developers 
 	- `<custom-repo-url>`: The URL of your custom repository.
 - **packageRestore**: Enables automatic package restore, ensuring that dependencies are restored when the project is built.
 
-## 📋 Related articles
+## References
 
 - https://schwabencode.com/blog/2024/04/10/welcome-new-visual-studio-slnx-solution-file
 - https://blog.ndepend.com/slnx-the-new-net-solution-xml-file-format/

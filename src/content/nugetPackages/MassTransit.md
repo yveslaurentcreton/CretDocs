@@ -1,5 +1,5 @@
 ---
 name: MassTransit
-description: A free, open-source distributed application framework for .NET.
+description: A lightweight, open-source abstraction layer for distributed application development in .NET, facilitating message-based communication and integration with message brokers like RabbitMQ, Azure Service Bus, and more.
 link: https://www.nuget.org/packages/MassTransit/
 ---

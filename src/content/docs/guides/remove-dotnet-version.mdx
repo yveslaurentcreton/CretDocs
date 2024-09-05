@@ -5,45 +5,64 @@ tags:
 - guide
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 Managing .NET SDK and runtime versions on your system can be crucial for maintaining a clean development environment and ensuring compatibility with different projects. This guide will walk you through the process of listing, individually removing, and batch removing .NET SDK and runtime versions using terminal commands.
 
 ## List the .NET SDK Versions
 
-Before removing any SDK versions, it’s helpful to see which versions are currently installed. To list all installed .NET SDK versions, use the following command in the terminal:
+Before removing any SDK versions, it's helpful to see which versions are currently installed. To list all installed .NET SDK versions, use the following command in the terminal:
 
 <Tabs syncKey="os">
   <TabItem label="Windows" icon="seti:windows">
     ```sh
     dotnet --list-sdks
     ```
+
+    This command will display output similar to the following:
+
+    ```
+    6.0.423 [C:\Program Files\dotnet\sdk]
+    7.0.100-rc.2.22477.23 [C:\Program Files\dotnet\sdk]
+    7.0.100 [C:\Program Files\dotnet\sdk]
+    7.0.304 [C:\Program Files\dotnet\sdk]
+    8.0.100 [C:\Program Files\dotnet\sdk]
+    8.0.302 [C:\Program Files\dotnet\sdk]
+    ```
   </TabItem>
   <TabItem label="MacOS" icon="apple">
     ```sh
     dotnet --list-sdks
+    ```
+
+    This command will display output similar to the following:
+
+    ```
+    6.0.423 [/usr/local/share/dotnet/sdk]
+    7.0.100-rc.2.22477.23 [/usr/local/share/dotnet/sdk]
+    7.0.100 [/usr/local/share/dotnet/sdk]
+    7.0.304 [/usr/local/share/dotnet/sdk]
+    8.0.100 [/usr/local/share/dotnet/sdk]
+    8.0.302 [/usr/local/share/dotnet/sdk]
     ```
   </TabItem>
   <TabItem label="Linux" icon="linux">
     ```sh
     dotnet --list-sdks
     ```
+
+    This command will display output similar to the following:
+    
+    ```
+    6.0.423 [/usr/share/dotnet/sdk/]
+    7.0.100-rc.2.22477.23 [/usr/share/dotnet/sdk/]
+    7.0.100 [/usr/share/dotnet/sdk/]
+    7.0.304 [/usr/share/dotnet/sdk/]
+    8.0.100 [/usr/share/dotnet/sdk/]
+    8.0.302 [/usr/share/dotnet/sdk/]
+    ```
   </TabItem>
 </Tabs>
-
-This command will display output similar to the following:
-
-```
-6.0.423 [/usr/local/share/dotnet/sdk]
-7.0.100-rc.2.22477.23 [/usr/local/share/dotnet/sdk]
-7.0.100 [/usr/local/share/dotnet/sdk]
-7.0.101 [/usr/local/share/dotnet/sdk]
-7.0.200 [/usr/local/share/dotnet/sdk]
-7.0.304 [/usr/local/share/dotnet/sdk]
-7.0.402 [/usr/local/share/dotnet/sdk]
-8.0.100 [/usr/local/share/dotnet/sdk]
-8.0.302 [/usr/local/share/dotnet/sdk]
-```
 
 ## Remove Individual .NET SDK Versions
 
@@ -57,31 +76,27 @@ To remove a specific .NET SDK version, use the rm command followed by the path o
     ```sh
     sudo rm -rf /usr/local/share/dotnet/sdk/<version-number>
     ```
-  </TabItem>
-  <TabItem label="Linux" icon="linux">
-    TODO
-  </TabItem>
-</Tabs>
 
-For example, to remove the .NET SDK version 7.0.304, run:
+    For example, to remove the .NET SDK version 7.0.304, run:
 
-<Tabs syncKey="os">
-  <TabItem label="Windows" icon="seti:windows">
-    TODO
-  </TabItem>
-  <TabItem label="MacOS" icon="apple">
     ```sh
     sudo rm -rf /usr/local/share/dotnet/sdk/7.0.304
     ```
   </TabItem>
   <TabItem label="Linux" icon="linux">
-    TODO
+    ```sh
+    sudo rm -rf /usr/share/dotnet/sdk/<version-number>
+    ```
+
+    For example, to remove the .NET SDK version 7.0.304, run:
+
+    ```sh
+    sudo rm -rf /usr/share/dotnet/sdk/7.0.304
+    ```
   </TabItem>
 </Tabs>
 
-**Note:** The sudo command is used to gain the necessary permissions to delete the SDK directories.
-
-## Remove an Entire Version Series (e.g., 7.*)
+## Remove an entire Version Series (e.g., 7.*)
 
 If you want to remove all SDK versions within a major release series (e.g., all 6.x versions), you can use a wildcard * with the rm command:
 
@@ -95,7 +110,9 @@ If you want to remove all SDK versions within a major release series (e.g., all 
     ```
   </TabItem>
   <TabItem label="Linux" icon="linux">
-    TODO
+    ```sh
+    sudo rm -rf /usr/share/dotnet/sdk/7.*
+    ```
   </TabItem>
 </Tabs>
 
@@ -107,40 +124,72 @@ Similarly, you may want to list all installed .NET runtime versions. To list the
 
 <Tabs syncKey="os">
   <TabItem label="Windows" icon="seti:windows">
-    TODO
+    ```sh
+    dotnet --list-runtimes
+    ```
+
+    This command will display output similar to the following:
+    
+    ```
+    Microsoft.AspNetCore.App 6.0.31 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.0-rc.2.22476.2 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.0 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.3 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 8.0.0 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+    Microsoft.NETCore.App 6.0.31 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.0-rc.2.22472.3 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.0 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.3 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    Microsoft.NETCore.App 8.0.0 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    Microsoft.NETCore.App 8.0.6 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+    ```
   </TabItem>
   <TabItem label="MacOS" icon="apple">
     ```sh
     dotnet --list-runtimes
     ```
+
+    This command will display output similar to the following:
+    
+    ```
+    Microsoft.AspNetCore.App 6.0.31 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.0-rc.2.22476.2 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.0 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.3 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 8.0.0 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 8.0.6 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.NETCore.App 6.0.31 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.0-rc.2.22472.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.0 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 8.0.0 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 8.0.6 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
+    ```
   </TabItem>
   <TabItem label="Linux" icon="linux">
-    TODO
+    ```sh
+    dotnet --list-runtimes
+    ```
+
+    This command will display output similar to the following:
+
+    ```
+    Microsoft.AspNetCore.App 6.0.31 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.0-rc.2.22476.2 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.0 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 7.0.3 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 8.0.0 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.AspNetCore.App 8.0.6 [/usr/share/dotnet/shared/Microsoft.AspNetCore.App]
+    Microsoft.NETCore.App 6.0.31 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.0-rc.2.22472.3 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.0 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 7.0.3 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 8.0.0 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
+    Microsoft.NETCore.App 8.0.6 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
+    ```
   </TabItem>
 </Tabs>
-
-This command will display output similar to the following:
-
-```
-Microsoft.AspNetCore.App 6.0.31 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 7.0.0-rc.2.22476.2 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 7.0.0 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 7.0.1 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 7.0.3 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 7.0.7 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 7.0.12 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 8.0.0 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.AspNetCore.App 8.0.6 [/usr/local/share/dotnet/shared/Microsoft.AspNetCore.App]
-Microsoft.NETCore.App 6.0.31 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 7.0.0-rc.2.22472.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 7.0.0 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 7.0.1 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 7.0.3 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 7.0.7 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 7.0.12 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 8.0.0 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-Microsoft.NETCore.App 8.0.6 [/usr/local/share/dotnet/shared/Microsoft.NETCore.App]
-```
 
 ## Remove Individual .NET Runtime Versions
 
@@ -154,29 +203,25 @@ To remove a specific .NET runtime version, use the rm command followed by the pa
     ```sh
     sudo rm -rf /usr/local/share/dotnet/shared/<runtime-name>/<version-number>
     ```
-  </TabItem>
-  <TabItem label="Linux" icon="linux">
-    TODO
-  </TabItem>
-</Tabs>
 
-For example, to remove the .NET runtime version Microsoft.AspNetCore.App 7.0.3, run:
+    For example, to remove the .NET runtime version Microsoft.AspNetCore.App 7.0.3, run:
 
-<Tabs syncKey="os">
-  <TabItem label="Windows" icon="seti:windows">
-    TODO
-  </TabItem>
-  <TabItem label="MacOS" icon="apple">
     ```sh
     sudo rm -rf /usr/local/share/dotnet/shared/Microsoft.AspNetCore.App/7.0.3
     ```
   </TabItem>
   <TabItem label="Linux" icon="linux">
-    TODO
+    ```sh
+    sudo rm -rf /usr/share/dotnet/shared/<runtime-name>/<version-number>
+    ```
+
+    For example, to remove the .NET runtime version Microsoft.AspNetCore.App 7.0.3, run:
+
+    ```sh
+    sudo rm -rf /usr/share/dotnet/shared/Microsoft.AspNetCore.App/7.0.3
+    ```
   </TabItem>
 </Tabs>
-
-**Note:** The sudo command is used to gain the necessary permissions to delete the runtime directories.
 
 ## Remove an Entire Runtime Version Series (e.g., 7.*)
 
@@ -193,8 +238,15 @@ If you want to remove all runtime versions within a major release series (e.g., 
     ```
   </TabItem>
   <TabItem label="Linux" icon="linux">
-    TODO
+    ```sh
+    sudo rm -rf /usr/share/dotnet/shared/Microsoft.AspNetCore.App/7.*
+    sudo rm -rf /usr/share/dotnet/shared/Microsoft.NETCore.App/7.*
+    ```
   </TabItem>
 </Tabs>
 
-This command will remove all installed .NET runtime versions that start with 7, such as 7.0.0, 7.0.1, etc.
+This command will remove all installed .NET runtime versions that start with 7, such as 7.0.0, 7.0.3, etc.
+
+## References
+
+- https://learn.microsoft.com/en-us/dotnet/core/install/remove-runtime-sdk-versions

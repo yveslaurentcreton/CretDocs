@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const technologies = await getCollection('technologies');
 ---
 
-<StarlightPage frontmatter={{ title: 'Technologies' }}>
+<StarlightPage frontmatter={{ title: 'Technologies', tableOfContents: false }}>
 
 This page lists various technologies, frameworks, and libraries that are essential for modern web and software development. These tools help in building robust, efficient, and scalable applications across different platforms.
 
