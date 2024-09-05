@@ -6,7 +6,8 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'DocsJet',
-			site: 'https://yveslaurentcreton.github.io/DocsJet/',
+			site: 'https://yveslaurentcreton.github.io',
+			base: 'docsjet',
 			social: {
 				github: 'https://github.com/yveslaurentcreton/docsjet',
 			},
@@ -60,8 +61,7 @@ export default defineConfig({
 						}
 					]
 				}
-			],
-			output: 'static'
+			]
 		}),
 	],
 });
