@@ -1,0 +1,33 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+
+const nugetPackages = await getCollection('nugetPackages');
+---
+
+<StarlightPage frontmatter={{ title: 'NuGet Packages' }}>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+
+  {
+    nugetPackages.map((nugetPackage) => (
+      <tr>
+        <td>
+          {nugetPackage.data.link ? (
+            <a href={nugetPackage.data.link} target="_blank">{nugetPackage.data.name}</a>
+          ) : (
+          nugetPackage.data.name
+          )}
+        </td>
+        <td>{nugetPackage.data.description}</td>
+      </tr>
+    ))
+  }
+
+</table>
+
+</StarlightPage>

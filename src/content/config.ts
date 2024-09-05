@@ -27,5 +27,37 @@ export const collections = {
 			type: z.string(),
 			description: z.string().optional(),
 		}),
+	}),
+	nugetPackages: defineCollection({
+		type: 'content',
+		schema: z.object({
+			name: z.string(),
+			description: z.string().optional(),
+			link: z.string().optional(),
+		}),
+	}),
+	azuredatastudioExtensions: defineCollection({
+		type: 'content',
+		schema: z.object({
+			name: z.string(),
+			description: z.string().optional(),
+			link: z.string().optional(),
+		}),
+	}),
+	chromeExtensions: defineCollection({
+		type: 'content',
+		schema: z.object({
+			name: z.string(),
+			description: z.string().optional(),
+			link: z.string().optional(),
+		}),
+	}),
+	vscodeExtensions: defineCollection({
+		type: 'content',
+		schema: z.object({
+			name: z.string(),
+			description: z.string().optional(),
+			whenToUse: z.string().nullable().optional(),
+		}),
 	})
 };

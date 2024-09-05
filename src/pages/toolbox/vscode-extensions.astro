@@ -1,0 +1,29 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+
+const vscodeExtensions = await getCollection('vscodeExtensions');
+---
+
+<StarlightPage frontmatter={{ title: 'Visual Studio Code Extensions' }}>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>When to use</th>
+  </tr>
+
+  {
+    vscodeExtensions.map((extension) => (
+      <tr>
+        <td>{extension.data.name}</td>
+        <td>{extension.data.description}</td>
+        <td>{extension.data.whenToUse}</td>
+      </tr>
+    ))
+  }
+
+</table>
+
+</StarlightPage>

@@ -30,6 +30,18 @@ export default defineConfig({
 					label: 'Toolbox',
 					items: [
 						{
+							label: 'Azure Data Studio Extensions',
+							link: 'toolbox/azuredatastudio-extensions',
+						},
+						{
+							label: 'Google Chrome Extensions',
+							link: 'toolbox/chrome-extensions',
+						},
+						{
+							label: 'NuGet Packages',
+							link: 'toolbox/nuget-packages',
+						},
+						{
 							label: 'Powershell Modules',
 							link: 'toolbox/powershell-modules',
 						},
@@ -40,6 +52,10 @@ export default defineConfig({
 						{
 							label: 'Tools',
 							link: 'toolbox/tools',
+						},
+						{
+							label: 'Visual Studio Code Extensions',
+							link: 'toolbox/vscode-extensions',
 						}
 					]
 				}
