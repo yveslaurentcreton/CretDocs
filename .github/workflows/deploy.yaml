@@ -27,7 +27,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build
-        run: astro check && astro build
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
