@@ -1,4 +1,5 @@
 ---
+import { Icon } from '@astrojs/starlight/components';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection } from 'astro:content';
 
@@ -22,7 +23,14 @@ const dscModules = await getCollection('powershellModules', ({ data }) => {
   {
     powershellModules.map((module) => (
       <tr>
-        <td>{module.data.name}</td>
+        <td>
+          <span style="display: flex; align-items: center; text-wrap: nowrap;">
+            {module.data.name}
+            {module.data.externalLink ? (
+              <a href={module.data.externalLink} target="_blank"><Icon name='external' size="1rem" /></a>
+            ) : ''}
+          </span>
+        </td>
         <td>{module.data.description}</td>
       </tr>
     ))
@@ -40,7 +48,14 @@ const dscModules = await getCollection('powershellModules', ({ data }) => {
   {
     dscModules.map((module) => (
       <tr>
-        <td>{module.data.name}</td>
+        <td>
+          <span style="display: flex; align-items: center; text-wrap: nowrap;">
+            {module.data.name}
+            {module.data.externalLink ? (
+              <a href={module.data.externalLink} target="_blank"><Icon name='external' size="1rem" /></a>
+            ) : ''}
+          </span>
+        </td>
         <td>{module.data.description}</td>
       </tr>
     ))

@@ -1,4 +1,5 @@
 ---
+import { Icon } from '@astrojs/starlight/components';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection } from 'astro:content';
 
@@ -17,7 +18,14 @@ const vscodeExtensions = await getCollection('vscodeExtensions');
   {
     vscodeExtensions.map((extension) => (
       <tr>
-        <td>{extension.data.name}</td>
+        <td>
+          <span style="display: flex; align-items: center; text-wrap: nowrap;">
+            {extension.data.name}
+            {extension.data.externalLink ? (
+              <a href={extension.data.externalLink} target="_blank"><Icon name='external' size="1rem" /></a>
+            ) : ''}
+          </span>
+        </td>
         <td>{extension.data.description}</td>
         <td>{extension.data.whenToUse}</td>
       </tr>

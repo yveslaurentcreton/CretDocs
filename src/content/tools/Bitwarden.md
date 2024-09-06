@@ -1,6 +1,6 @@
 ---
 name: Bitwarden
 description: A secure, open-source password manager.
-link: https://bitwarden.com/
+externalLink: https://bitwarden.com/
 alternativeTo: 
 ---

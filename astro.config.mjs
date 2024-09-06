@@ -46,6 +46,9 @@ export default defineConfig({
 						{
 							label: 'Powershell Modules',
 							link: 'toolbox/powershell-modules',
+						},						{
+							label: 'Resources',
+							link: 'toolbox/resources',
 						},
 						{
 							label: 'Technologies',

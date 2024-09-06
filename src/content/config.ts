@@ -8,6 +8,7 @@ export const collections = {
 		schema: z.object({
 			name: z.string(),
 			description: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
 			render: z.boolean().nullable().optional(),
 		}),
 	}),
@@ -16,7 +17,7 @@ export const collections = {
 		schema: z.object({
 			name: z.string(),
 			description: z.string().optional(),
-			link: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
 			alternativeTo: z.string().nullable().optional(),
 		}),
 	}),
@@ -26,6 +27,7 @@ export const collections = {
 			name: z.string(),
 			type: z.string(),
 			description: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
 		}),
 	}),
 	nugetPackages: defineCollection({
@@ -33,7 +35,7 @@ export const collections = {
 		schema: z.object({
 			name: z.string(),
 			description: z.string().optional(),
-			link: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
 		}),
 	}),
 	azuredatastudioExtensions: defineCollection({
@@ -41,7 +43,7 @@ export const collections = {
 		schema: z.object({
 			name: z.string(),
 			description: z.string().optional(),
-			link: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
 		}),
 	}),
 	chromeExtensions: defineCollection({
@@ -49,7 +51,15 @@ export const collections = {
 		schema: z.object({
 			name: z.string(),
 			description: z.string().optional(),
-			link: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
+		}),
+	}),
+	resources: defineCollection({
+		type: 'content',
+		schema: z.object({
+			name: z.string(),
+			description: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
 		}),
 	}),
 	vscodeExtensions: defineCollection({
@@ -57,6 +67,7 @@ export const collections = {
 		schema: z.object({
 			name: z.string(),
 			description: z.string().optional(),
+			externalLink: z.string().nullable().optional(),
 			whenToUse: z.string().nullable().optional(),
 		}),
 	})

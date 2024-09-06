@@ -3,10 +3,10 @@ import { Icon } from '@astrojs/starlight/components';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection } from 'astro:content';
 
-const nugetPackages = await getCollection('nugetPackages');
+const resources = await getCollection('resources');
 ---
 
-<StarlightPage frontmatter={{ title: 'NuGet Packages', tableOfContents: false }}>
+<StarlightPage frontmatter={{ title: 'Resources', tableOfContents: false }}>
 
 <table>
   <tr>
@@ -15,17 +15,17 @@ const nugetPackages = await getCollection('nugetPackages');
   </tr>
 
   {
-    nugetPackages.map((nugetPackage) => (
+    resources.map((resource) => (
       <tr>
         <td>
           <span style="display: flex; align-items: center; text-wrap: nowrap;">
-            {nugetPackage.data.name}
-            {nugetPackage.data.externalLink ? (
-              <a href={nugetPackage.data.externalLink} target="_blank"><Icon name='external' size="1rem" /></a>
+            {resource.data.name}
+            {resource.data.externalLink ? (
+              <a href={resource.data.externalLink} target="_blank"><Icon name='external' size="1rem" /></a>
             ) : ''}
           </span>
         </td>
-        <td>{nugetPackage.data.description}</td>
+        <td>{resource.data.description}</td>
       </tr>
     ))
   }

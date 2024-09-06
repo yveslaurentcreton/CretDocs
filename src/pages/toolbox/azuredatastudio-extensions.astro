@@ -1,4 +1,5 @@
 ---
+import { Icon } from '@astrojs/starlight/components';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection } from 'astro:content';
 
@@ -17,11 +18,12 @@ const azuredatastudioExtensions = await getCollection('azuredatastudioExtensions
     azuredatastudioExtensions.map((extension) => (
       <tr>
         <td>
-          {extension.data.link ? (
-            <a href={extension.data.link} target="_blank">{extension.data.name}</a>
-          ) : (
-          extension.data.name
-          )}
+          <span style="display: flex; align-items: center; text-wrap: nowrap;">
+            {extension.data.name}
+            {extension.data.externalLink ? (
+              <a href={extension.data.externalLink} target="_blank"><Icon name='external' size="1rem" /></a>
+            ) : ''}
+          </span>
         </td>
         <td>{extension.data.description}</td>
       </tr>
