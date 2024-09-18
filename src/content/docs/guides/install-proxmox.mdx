@@ -1,0 +1,63 @@
+---
+title: Install Proxmox
+tags:
+- manual
+- guide
+---
+
+import { Steps } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+## Install Proxmox
+
+<Steps>
+
+1. **Download ISO**  
+   
+   Visit the [Proxmox download page](https://www.proxmox.com/en/downloads) and download the latest ISO file.
+
+1. **Use Rufus to Deploy ISO onto USB Drive**
+   
+   Open [Rufus](https://rufus.ie/) to create a bootable USB drive using the Proxmox ISO.
+   
+   <Aside>
+      **Ventoy does not work** for this process.
+   </Aside>
+
+1. **Boot from USB**
+
+   1. Insert the USB into the target machine and boot from it.
+   1. Follow the installation wizard instructions to install Proxmox.
+
+1. **Take Note of the IP Address**  
+   
+   During installation, take note of the assigned IP address. You'll need this to access the Proxmox web interface.
+
+1. **Log on to Proxmox**  
+
+   1. Using another computer, open a browser and go to `https://<ip-address>:8006`.
+   1. Use the `root` username and the password set during the installation wizard to log in.
+
+</Steps>
+
+## Optional: Enlarge the Drive Partition
+
+If you need to enlarge the Proxmox root partition, follow these steps:
+
+<Steps>
+
+1. **Remove the `local-lvm`**
+
+   Navigate to `Datacenter` > `Storage` and remove the `local-lvm` storage.
+
+1. **Enlarge the root partition**
+
+   Run the following commands to free up space and enlarge the root partition:
+   
+   ```bash
+   lvremove /dev/pve/data
+   lvresize -l +100%FREE /dev/pve/root
+   resize2fs /dev/mapper/pve-root
+   ```
+
+</Steps>

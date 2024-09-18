@@ -1,0 +1,99 @@
+---
+title: Install k3s cluster
+---
+
+import TabsOS from '../../../components/TabsOS.astro';
+import TabItemWindows from '../../../components/TabItemWindows.astro';
+import TabItemLinux from '../../../components/TabItemLinux.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+## Prerequisites
+
+- A load balancer IP or hostname.
+- Access to all control plane and worker nodes.
+
+## Installation
+
+<TabsOS>
+    <TabItemLinux>
+        <Steps>
+
+        1. **Install k3s on the first control plane node**
+
+            Run the following command to install k3s:
+
+            ```bash
+            curl -sfL https://get.k3s.io | sh -s - server \
+                --cluster-init \
+                --node-taint CriticalAddonsOnly=true:NoExecute \
+                --tls-san <load-balancer-ip-or-hostname>
+            ```
+
+        1. **Retrieve the cluster token**
+
+            After the installation, retrieve the `<cluster-token>` and take note of it:
+
+            ```bash
+            cat /var/lib/rancher/k3s/server/node-token
+            ```
+
+        1. **Install k3s on additional control plane nodes**
+
+            Run the following command to install k3s and link it to the cluster:
+
+            ```bash
+            curl -sfL https://get.k3s.io | sh -s - server \
+                --node-taint CriticalAddonsOnly=true:NoExecute \
+                --tls-san <load-balancer-ip-or-hostname> \
+                --server https://<control-plane-01-ip>:6443 \
+                --token <cluster-token>
+            ```
+
+        1. **Install k3s on all the worker nodes**
+
+            Run the following command to install k3s and link it to the cluster:
+
+            ```bash
+            curl -sfL https://get.k3s.io | sh -s - agent \
+                --server https://<control-plane-01-ip>:6443 \
+                --token <cluster-token>
+            ```
+
+        </Steps>
+    </TabItemLinux>
+</TabsOS>
+
+## Configure local `kubectl` access
+
+<TabsOS>
+    <TabItemWindows>
+        <Steps>
+
+        1. Retrieve the Kubernetes configuration from one of the control plane nodes:
+
+            ```bash
+            sudo cat /etc/rancher/k3s/k3s.yaml
+            ```
+
+        1. Save the content to a file located at `%USERPROFILE%/.kube/<filename-without-extension>` on your local machine.
+        Rename the `default` context to your preferred cluster name.
+
+        1. Add configuration to `kubectl`. In PowerShell, run:
+
+            ```powershell
+            Get-ChildItem -Path "$($env:USERPROFILE)/.kube" -File | ForEach-Object {
+                $configFiles += $_.FullName + ";"
+            }
+
+            [Environment]::SetEnvironmentVariable("KUBECONFIG", $configFiles, "USER")
+            ```
+
+        1. Switch to the new context:
+
+            ```bash
+            kubectl config use-context <context-name>
+            ```
+            
+        </Steps>
+    </TabItemWindows>
+</TabsOS>

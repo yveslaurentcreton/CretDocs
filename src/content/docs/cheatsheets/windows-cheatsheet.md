@@ -22,6 +22,7 @@ tags:
 | Restore/Minimize current window       | `Windows + Down Arrow`       |
 | Snap window to the left               | `Windows + Left Arrow`       |
 | Snap window to the right              | `Windows + Right Arrow`      |
+| Run as Administrator                  | `Ctrl + Shift + Enter`       |
 
 ## Common Commands
 

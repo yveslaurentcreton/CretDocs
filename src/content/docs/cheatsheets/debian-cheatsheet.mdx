@@ -1,0 +1,60 @@
+---
+title: Debian Cheatsheet
+tags:
+- cheatsheet
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+## Install and configure `sudo`
+
+<Steps>
+
+1. Login as `root`.
+
+1. Install `sudo` using:
+
+    ```bash
+    apt install sudo
+    ```
+
+1. (optional) To check who is allowed to use `sudo`, run:
+
+    ```bash
+    cat /etc/sudoers
+    ```
+
+1. To add a user to the `sudo` group:
+
+    ```bash
+    usermod -aG sudo <username>
+    ```
+
+</Steps>
+
+
+## Import GitHub SSH Keys onto Linux Server
+
+<Steps>
+
+1. Install `ssh-import-id` using:
+
+    ```bash
+    sudo apt install ssh-import-id
+    ```
+
+1. Import your GitHub SSH keys using:
+
+    ```bash
+    ssh-import-id-gh <github-username>
+    ```
+
+</Steps>
+
+## Install `curl`
+
+Install `curl` using:
+
+```bash
+sudo apt install curl
+```

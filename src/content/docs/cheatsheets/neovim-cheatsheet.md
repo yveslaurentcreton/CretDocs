@@ -12,7 +12,7 @@ tags:
 | Move cursor down                    | `j`                          |
 | Move cursor left                    | `h`                          |
 | Move cursor right                   | `l`                          |
-| Jump to the beginning of the line   | `0` (zero)                   |
+| Jump to the beginning of the line   | `0`                          |
 | Jump to the end of the line         | `$`                          |
 | Jump to the top of the file         | `gg`                         |
 | Jump to the bottom of the file      | `G`                          |
