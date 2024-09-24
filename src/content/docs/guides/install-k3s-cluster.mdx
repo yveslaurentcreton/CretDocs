@@ -18,6 +18,14 @@ import { Steps } from '@astrojs/starlight/components';
     <TabItemLinux>
         <Steps>
 
+        1. **Install NFS support (optional)**
+
+            If your cluster will use NFS for persistent storage, install the `nfs-common` package on all nodes (both control plane and worker nodes) by running the following command:
+
+            ```bash
+            sudo apt install nfs-common
+            ```
+
         1. **Install k3s on the first control plane node**
 
             Run the following command to install k3s:
