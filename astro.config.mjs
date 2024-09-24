@@ -36,6 +36,10 @@ export default defineConfig({
 							link: 'toolbox/azuredatastudio-extensions',
 						},
 						{
+							label: 'Debian Packages',
+							link: 'toolbox/debian-packages',
+						},
+						{
 							label: 'Google Chrome Extensions',
 							link: 'toolbox/chrome-extensions',
 						},

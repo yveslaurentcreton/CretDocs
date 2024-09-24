@@ -1,0 +1,29 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+
+const debianPackages = await getCollection('debianPackages');
+---
+
+<StarlightPage frontmatter={{ title: 'Debian Packages', tableOfContents: false }}>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Category</th>
+  </tr>
+
+  {
+    debianPackages
+      .sort((a, b) => a.data.name.toLowerCase().localeCompare(b.data.name.toLowerCase()))
+      .map((pkg) => (
+      <tr>
+        <td>{pkg.data.name}</td>
+        <td>{pkg.data.category}</td>
+      </tr>
+    ))
+  }
+
+</table>
+
+</StarlightPage>

@@ -21,6 +21,13 @@ export const collections = {
 			alternativeTo: z.string().nullable().optional(),
 		}),
 	}),
+	debianPackages: defineCollection({
+		type: 'content',
+		schema: z.object({
+			name: z.string(),
+			category: z.string().optional(),
+		}),
+	}),
 	powershellModules: defineCollection({
 		type: 'content',
 		schema: z.object({
