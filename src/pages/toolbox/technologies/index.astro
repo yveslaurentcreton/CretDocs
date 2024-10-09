@@ -22,7 +22,7 @@ This page lists various technologies, frameworks, and libraries that are essenti
       <tr>
         <td>
           {technology.data.render ? (
-            <a href={`./technologies/${technology.slug}`}>{technology.data.name}</a>
+            <a href={`${import.meta.env.BASE_URL}/toolbox/technologies/${technology.slug}`}>{technology.data.name}</a>
           ) : (
             technology.data.name
           )}
