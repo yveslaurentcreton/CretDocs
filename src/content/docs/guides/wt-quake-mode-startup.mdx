@@ -1,0 +1,51 @@
+---
+title: Start Windows Terminal in Quake Mode on logon
+---
+
+import TabsOS from '../../../components/TabsOS.astro';
+import TabItemWindows from '../../../components/TabItemWindows.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+## Prerequisites
+
+- **Windows Terminal** installed.
+
+## Setup
+
+<TabsOS>
+    <TabItemWindows>
+        <Steps>
+
+        1. **Open Task Scheduler**
+
+        1. **Create a New Task**
+
+            In Task Scheduler, click **Action** in the top menu and select **Create Task**.
+
+        1. **General Settings**
+
+            Under the **General** tab, configure:
+            - **Name**: `Windows Terminal Quake Mode`
+            - **Description**: Automatically starts Windows Terminal in Quake mode on logon.
+            - **Security options**: 
+                - Set **"Run only when user is logged on"**.
+
+        1. **Action Settings**
+
+            - Go to the **Actions** tab.
+            - Click **New** to add an action with the following details:
+                - **Action**: Select **Start a program**.
+                - **Program/script**: Enter `pwsh`
+                - **Add arguments**:
+
+                ```shell
+                -Command wt -w _quake pwsh -nologo -window minimized
+                ```
+
+        1. **Save and Test the Task**
+
+            Click **OK** to save the task. Log off and log back in to verify that Windows Terminal starts in **Quake Mode**, minimized.
+
+        </Steps>
+    </TabItemWindows>
+</TabsOS>
