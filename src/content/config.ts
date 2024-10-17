@@ -19,6 +19,7 @@ export const collections = {
 			description: z.string().optional(),
 			externalLink: z.string().nullable().optional(),
 			alternativeTo: z.string().nullable().optional(),
+			render: z.boolean().nullable().optional(),
 		}),
 	}),
 	debianPackages: defineCollection({

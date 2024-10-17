@@ -24,7 +24,11 @@ This page lists various utility tools that can help enhance productivity and str
       <tr>
         <td>
           <span style="display: flex; align-items: center; text-wrap: nowrap;">
-            {tool.data.name}
+            {tool.data.render ? (
+              <a href={`${import.meta.env.BASE_URL}/toolbox/technologies/${tool.slug}`}>{tool.data.name}</a>
+            ) : (
+              tool.data.name
+            )}
             {tool.data.externalLink ? (
               <a href={tool.data.externalLink} target="_blank"><Icon name='external' size="1rem" /></a>
             ) : ''}
