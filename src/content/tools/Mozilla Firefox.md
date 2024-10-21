@@ -8,7 +8,12 @@ render: true
 
 ## Configurations
 
-| Configuration                                | Default Value   | Suggested Value |
-|----------------------------------------------|-----------------|-----------------|
-| `extensions.pocket.enabled`                  | `true`          | `false`         |
-| `browser.urlbar.update2.engineAliasRefresh`  | Not available   | `true`          |
+| Configuration                                               | Default Value   | Suggested Value |
+|-------------------------------------------------------------|-----------------|-----------------|
+| `extensions.pocket.enabled`                                 | `true`          | `false`         |
+| `browser.urlbar.update2.engineAliasRefresh`                 | Not available   | `true`          |
+| `network.http.windows-sso.container-enabled.CONTAINERID`    | Not available   | `true`          |
+
+## References
+
+- https://github.com/mozilla/multi-account-containers/wiki/Frequently-asked-questions#enable-windows-sso-in-a-specific-container
