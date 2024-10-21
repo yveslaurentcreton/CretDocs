@@ -10,4 +10,5 @@ render: true
 
 | Configuration                                | Default Value   | Suggested Value |
 |----------------------------------------------|-----------------|-----------------|
-| `browser.urlbar.update2.engineAliasRefresh`  | Not available    | `true`          |
+| `extensions.pocket.enabled`                  | `true`          | `false`         |
+| `browser.urlbar.update2.engineAliasRefresh`  | Not available   | `true`          |
