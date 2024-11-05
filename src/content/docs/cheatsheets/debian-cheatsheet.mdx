@@ -58,3 +58,11 @@ Install `curl` using:
 ```bash
 sudo apt install curl
 ```
+
+## Configure auto reboot
+
+Add a line to `/etc/crontab` to reboot the system at 3:00 AM every day using:
+
+```bash
+echo "0 3 * * * root /sbin/shutdown -r now" | sudo tee -a /etc/crontab
+```
