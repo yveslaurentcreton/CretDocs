@@ -61,3 +61,34 @@ If you need to enlarge the Proxmox root partition, follow these steps:
    ```
 
 </Steps>
+
+## Optional: Prevent laptop from sleeping when the lid is closed
+
+If you're using a laptop and want to ensure that closing the lid doesn't put your system to sleep, follow these steps:
+
+<Steps>
+
+1. **Edit the logind configuration**
+
+   Open the configuration file using nano:
+
+   ```bash
+   nano /etc/systemd/logind.conf
+   ```
+
+   Uncomment (or add) the following lines:
+
+   ```bash
+   HandleLidSwitch=ignore
+   HandleLidSwitchDocked=ignore
+   ```
+
+1. **Restart the systemd-logind service**
+
+   Apply the changes by restarting the service:   
+
+   ```bash
+   systemctl restart systemd-logind.service
+   ```
+
+</Steps>
