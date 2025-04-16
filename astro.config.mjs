@@ -5,6 +5,9 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	site: 'https://yveslaurentcreton.github.io',
 	base: '/DocsJet',
+	server: {
+		host: true
+	},
 	integrations: [
 		starlight({
 			title: 'DocsJet',

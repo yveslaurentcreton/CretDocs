@@ -1,0 +1,37 @@
+---
+title: Setting Up Git in Devcontainers
+description: How to properly configure Git integration in VS Code devcontainers
+---
+
+import { Steps } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+When developing in VS Code devcontainers, proper Git integration is essential for version control. Here's how to set it up correctly to avoid common issues.
+
+## Understanding Git in Devcontainers
+
+When working in a devcontainer, the workspace is mounted from the host machine into the container. Git has security measures that prevent it from working with directories owned by different users, which is often the case in container environments. This needs to be addressed for seamless Git integration.
+
+<Aside type="tip">
+This configuration is particularly important because the container user (often non-root) needs to work with files that might be owned by the host user.
+</Aside>
+
+## Setting Up Git Integration
+
+Add the following to your `devcontainer.json` to ensure Git works properly in your container:
+
+```json
+{
+  "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}"
+}
+```
+
+This configuration tells Git that it's safe to work with the workspace directory, despite potential ownership differences between the host and container environments.
+
+## What This Solves
+
+With this setup, you'll avoid common Git-related issues in devcontainers such as:
+- Git commands failing to execute
+- Source control features not working in VS Code
+- Git permissions errors
+- Issues with Git operations like commit, push, and pull
