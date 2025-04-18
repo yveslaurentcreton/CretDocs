@@ -36,9 +36,9 @@ The `.sln` file is the traditional solution file format used in .NET projects. I
 
 #### Solution File (.slnx)
 
-The `.slnx` file is a newer alternative to the traditional `.sln` file, providing several enhancements and improvements. This XML-based format addresses many limitations of the `.sln` file by being easier to read, follow, and edit without needing Visual Studio. It reduces complexity by eliminating the use of GUIDs and other redundant information, making it simpler to manage and merge changes.
+The `.slnx` file is the recommended solution file format for .NET projects. It provides several enhancements and improvements over the traditional `.sln` file. This XML-based format is easier to read, follow, and edit without needing Visual Studio. It eliminates the use of GUIDs and other redundant information, making it simpler to manage and merge changes.
 
-Using either `.sln` or `.slnx` depends on your project's requirements and the development tools you use. While `.sln` is widely supported and stable, `.slnx` offers modern features and simplicity but is still in preview and might not yet be suitable for all production environments​
+As of .NET SDK 9.0.200, `.slnx` is fully supported. It is now the preferred choice for all new .NET projects.
 
 #### Solution Filter File (.slnf)
 
@@ -121,6 +121,122 @@ This file specifies the package sources for NuGet, ensuring that all developers 
 	- `<custom-repo-name>`: The name of your custom repository.
 	- `<custom-repo-url>`: The URL of your custom repository.
 - **packageRestore**: Enables automatic package restore, ensuring that dependencies are restored when the project is built.
+
+## Tooling Files
+
+In addition to the essential project files, the following tooling files should be included in your project to ensure a consistent development environment and adherence to best practices:
+
+<FileTree>
+- Root
+  - .github/
+    - copilot-instructions.md
+  - .vscode/
+    - extensions.json
+    - settings.json
+  - .gitignore
+  - .devcontainer/
+    - devcontainer.json
+</FileTree>
+
+### .github/copilot-instructions.md
+
+This file contains guidelines and instructions for using GitHub Copilot effectively within the project. It ensures that all contributors follow consistent practices when leveraging AI-assisted coding tools.
+
+### .vscode/extensions.json
+
+This file specifies the recommended Visual Studio Code extensions for the project. It helps developers quickly set up their environment with the necessary tools.
+
+```json
+{
+  "recommendations": [
+    "ms-dotnettools.csdevkit",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode.powershell"
+  ]
+}
+```
+
+### .vscode/settings.json
+
+This file contains workspace-specific settings for Visual Studio Code, ensuring consistency in formatting, linting, and other configurations.
+
+```json
+{
+	"[csharp]": {
+		"editor.tabSize": 4
+	},
+	"csharp.debug.justMyCode": false,
+	"csharp.debug.logging.moduleLoad": false,
+	"files.associations": {
+		"*.slnx": "xml"
+	},
+	"dotnet.defaultSolution": "Solution.sln(x)",
+	"github.copilot.chat.codesearch.enabled": true,
+}
+```
+
+### .gitignore
+
+The `.gitignore` file specifies intentionally untracked files to ignore. This helps prevent sensitive or unnecessary files from being committed to the repository.
+
+```
+# Node.js
+node_modules/
+.env
+
+# Logs
+logs/
+*.log
+
+# System Files
+.DS_Store
+Thumbs.db
+```
+
+### Dev Containers
+
+Dev Containers provide a consistent and isolated development environment using Docker. This ensures that all developers work in the same environment, reducing issues caused by differences in local setups.
+
+<FileTree>
+- Root
+  - .devcontainer/
+    - devcontainer.json
+</FileTree>
+
+#### .devcontainer/devcontainer.json
+
+This file defines the configuration for the development container, including the image, extensions, and settings.
+
+```json
+{
+  "name": "C# (.NET)",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "9.0.203"
+    },
+    "ghcr.io/davzucky/devcontainers-features-wolfi/docker-outside-of-docker:1": {
+      "installDocker": true,
+      "installBuildx": true,
+      "installDockerCompose": true
+    }
+  },
+  "extensions": [
+    "ms-dotnettools.csdevkit",
+    "ms-azuretools.vscode-docker",
+    "ms-vscode.powershell"
+  ],
+  "settings": {
+    "editor.tabSize": 4
+  }
+}
+```
+
+**Benefits**:
+
+- **Consistency**: Ensures all developers use the same environment.
+- **Isolation**: Prevents conflicts with local dependencies.
+- **Portability**: Makes it easy to share the development environment.
 
 ## References
 
