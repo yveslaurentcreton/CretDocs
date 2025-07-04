@@ -4,15 +4,15 @@ import starlight from '@astrojs/starlight';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://yveslaurentcreton.github.io',
-	base: '/DocsJet',
+	base: '/CretDocs',
 	server: {
 		host: true
 	},
 	integrations: [
 		starlight({
-			title: 'DocsJet',
+			title: 'CretDocs',
 			social: {
-				github: 'https://github.com/yveslaurentcreton/docsjet',
+				github: 'https://github.com/yveslaurentcreton/cretDocs',
 			},
 			sidebar: [
 				{
