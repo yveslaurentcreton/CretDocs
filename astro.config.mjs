@@ -11,9 +11,9 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'CretDocs',
-			social: {
-				github: 'https://github.com/yveslaurentcreton/cretDocs',
-			},
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/yveslaurentcreton/cretDocs' },
+			],
 			sidebar: [
 				{
 					label: 'Introduction',
