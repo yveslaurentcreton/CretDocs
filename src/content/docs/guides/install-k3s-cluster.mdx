@@ -12,6 +12,39 @@ import { Steps } from '@astrojs/starlight/components';
 - A load balancer IP or hostname.
 - Access to all control plane and worker nodes.
 
+## Architecture
+
+```mermaid
+graph TD
+    VIP[Virtual IP] -->|Routes to| CP1
+    VIP -->|Routes to| CP2
+    VIP -->|Routes to| CP3
+    
+    subgraph Control Plane
+        CP1[Control Plane 1 <br/>K3s + Keepalived]
+        CP2[Control Plane 2 <br/>K3s + Keepalived]
+        CP3[Control Plane 3 <br/>K3s + Keepalived]
+    end
+    
+    subgraph Workers
+        W1[Worker 1 <br/>Pods]
+        W2[Worker 2 <br/>Pods]
+        W3[Worker 3 <br/>Pods]
+    end
+    
+    CP1 -->|Orchestrates| W1
+    CP1 -->|Orchestrates| W2
+    CP1 -->|Orchestrates| W3
+    
+    CP2 -.->|Redundancy| W1
+    CP2 -.->|Redundancy| W2
+    CP2 -.->|Redundancy| W3
+    
+    CP3 -.->|Redundancy| W1
+    CP3 -.->|Redundancy| W2
+    CP3 -.->|Redundancy| W3
+```
+
 ## Installation
 
 <TabsOS>
@@ -26,9 +59,75 @@ import { Steps } from '@astrojs/starlight/components';
             sudo apt install nfs-common
             ```
 
+
+        1. **Setup Keepalived for Virtual IP (optional)**
+
+            To access the cluster via a single Virtual IP (VIP), you can install `keepalived` on the control plane nodes. This allows you to use a single IP address to access the Kubernetes API server, even if one of the control plane nodes goes down.
+
+            Install `keepalived`:
+
+            ```bash
+            sudo apt install keepalived
+            ```
+
+            Create the configuration file:
+
+            ```bash
+            sudo nano /etc/keepalived/keepalived.conf
+            ```
+
+            **Master Node Configuration:**
+
+            Replace `<interface>` with your network interface (e.g., `eth0`, `ens18`), `<password>` with a secure password, and `<virtual-ip>` with your desired VIP.
+
+            ```conf
+            vrrp_instance VI_1 {
+                state MASTER
+                interface <interface>
+                virtual_router_id 56
+                priority 255
+                advert_int 1
+                authentication {
+                    auth_type PASS
+                    auth_pass <password>
+                }
+                virtual_ipaddress {
+                    <virtual-ip>/24
+                }
+            }
+            ```
+
+            **Backup Node Configuration:**
+
+            For additional control plane nodes, use the `BACKUP` state and a lower priority (e.g., 254, 253).
+
+            ```conf
+            vrrp_instance VI_1 {
+                state BACKUP
+                interface <interface>
+                virtual_router_id 56
+                priority 254
+                advert_int 1
+                authentication {
+                    auth_type PASS
+                    auth_pass <password>
+                }
+                virtual_ipaddress {
+                    <virtual-ip>/24
+                }
+            }
+            ```
+
+            Enable and start the service:
+
+            ```bash
+            sudo systemctl enable --now keepalived.service
+            sudo systemctl status keepalived.service
+            ```
+
         1. **Install k3s on the first control plane node**
 
-            Run the following command to install k3s:
+            Run the following command to install k3s. Replace `<load-balancer-ip-or-hostname>` with your Load Balancer IP or the Virtual IP (VIP) if you set up Keepalived.
 
             ```bash
             curl -sfL https://get.k3s.io | sh -s - server \
@@ -47,7 +146,7 @@ import { Steps } from '@astrojs/starlight/components';
 
         1. **Install k3s on additional control plane nodes**
 
-            Run the following command to install k3s and link it to the cluster:
+            Run the following command to install k3s and link it to the cluster. Replace `<control-plane-01-ip>` with the IP of the first control plane node or the VIP.
 
             ```bash
             curl -sfL https://get.k3s.io | sh -s - server \
@@ -59,7 +158,7 @@ import { Steps } from '@astrojs/starlight/components';
 
         1. **Install k3s on all the worker nodes**
 
-            Run the following command to install k3s and link it to the cluster:
+            Run the following command to install k3s and link it to the cluster. Replace `<control-plane-01-ip>` with the IP of the first control plane node or the VIP.
 
             ```bash
             curl -sfL https://get.k3s.io | sh -s - agent \

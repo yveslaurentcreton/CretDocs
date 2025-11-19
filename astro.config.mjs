@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import mermaid from 'astro-mermaid';
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,6 +10,7 @@ export default defineConfig({
 		host: true
 	},
 	integrations: [
+		mermaid(),
 		starlight({
 			title: 'CretDocs',
 			social: [
@@ -53,7 +55,7 @@ export default defineConfig({
 						{
 							label: 'Powershell Modules',
 							link: 'toolbox/powershell-modules',
-						},						{
+						}, {
 							label: 'Resources',
 							link: 'toolbox/resources',
 						},
