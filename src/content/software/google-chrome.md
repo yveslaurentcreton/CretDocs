@@ -5,6 +5,7 @@ externalLink: https://www.google.com/chrome/
 tags:
   - browser
   - google
+  - tool
 render: true
 ---
 

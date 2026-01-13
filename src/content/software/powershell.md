@@ -6,6 +6,7 @@ tags:
   - shell
   - microsoft
   - automation
+  - technology
 render: true
 ---
 

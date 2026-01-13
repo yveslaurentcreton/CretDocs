@@ -6,6 +6,7 @@ tags:
   - package-manager
   - dotnet
   - microsoft
+  - technology
 render: true
 ---
 
