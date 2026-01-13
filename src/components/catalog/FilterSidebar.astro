@@ -1,0 +1,301 @@
+---
+interface Props {
+  linkedTags: string[];
+  plainTags: string[];
+  tagCounts: Map<string, number>;
+  initialVisibleCount?: number;
+}
+
+const { linkedTags, plainTags, tagCounts, initialVisibleCount = 5 } = Astro.props;
+---
+
+<aside class="filter-sidebar" data-filter-sidebar>
+  {linkedTags.length > 0 && (
+    <div class="filter-card" data-filter-card>
+      <button class="filter-card__header" data-filter-card-toggle aria-expanded="true">
+        <h3 class="filter-card__title">Platforms</h3>
+        <span class="filter-card__badge">{linkedTags.length}</span>
+        <svg class="filter-card__chevron" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M7 10l5 5 5-5z"/>
+        </svg>
+      </button>
+      <div class="filter-card__body" data-filter-card-body>
+        <div class="filter-group__options" data-filter-options>
+          {linkedTags.map((tag, index) => (
+            <label class="filter-checkbox" data-filter-option data-initially-hidden={index >= initialVisibleCount ? "true" : undefined}>
+              <input
+                type="checkbox"
+                name="tag"
+                value={tag}
+                data-filter-tag
+              />
+              <span class="filter-checkbox__indicator"></span>
+              <span class="filter-checkbox__label">{tag}</span>
+              <span class="filter-checkbox__count">{tagCounts.get(tag) ?? 0}</span>
+            </label>
+          ))}
+        </div>
+        {linkedTags.length > initialVisibleCount && (
+          <button class="filter-card__show-more" data-show-more>
+            <span data-show-more-text>Show {linkedTags.length - initialVisibleCount} more</span>
+            <span data-show-less-text hidden>Show less</span>
+          </button>
+        )}
+      </div>
+    </div>
+  )}
+
+  {plainTags.length > 0 && (
+    <div class="filter-card" data-filter-card>
+      <button class="filter-card__header" data-filter-card-toggle aria-expanded="true">
+        <h3 class="filter-card__title">Tags</h3>
+        <span class="filter-card__badge">{plainTags.length}</span>
+        <svg class="filter-card__chevron" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M7 10l5 5 5-5z"/>
+        </svg>
+      </button>
+      <div class="filter-card__body" data-filter-card-body>
+        <div class="filter-group__options" data-filter-options>
+          {plainTags.map((tag, index) => (
+            <label class="filter-checkbox" data-filter-option data-initially-hidden={index >= initialVisibleCount ? "true" : undefined}>
+              <input
+                type="checkbox"
+                name="tag"
+                value={tag}
+                data-filter-tag
+              />
+              <span class="filter-checkbox__indicator"></span>
+              <span class="filter-checkbox__label">{tag}</span>
+              <span class="filter-checkbox__count">{tagCounts.get(tag) ?? 0}</span>
+            </label>
+          ))}
+        </div>
+        {plainTags.length > initialVisibleCount && (
+          <button class="filter-card__show-more" data-show-more>
+            <span data-show-more-text>Show {plainTags.length - initialVisibleCount} more</span>
+            <span data-show-less-text hidden>Show less</span>
+          </button>
+        )}
+      </div>
+    </div>
+  )}
+</aside>
+
+<script>
+  function initFilterCards() {
+    const cards = document.querySelectorAll('[data-filter-card]');
+
+    cards.forEach(card => {
+      const toggle = card.querySelector('[data-filter-card-toggle]');
+      const body = card.querySelector('[data-filter-card-body]');
+      const showMoreBtn = card.querySelector('[data-show-more]');
+      const hiddenOptions = card.querySelectorAll('[data-initially-hidden="true"]');
+
+      // Collapse/expand card
+      toggle?.addEventListener('click', () => {
+        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!isExpanded));
+        if (body instanceof HTMLElement) {
+          body.hidden = isExpanded;
+        }
+      });
+
+      // Show more/less
+      if (showMoreBtn && hiddenOptions.length > 0) {
+        // Initially hide overflow items
+        hiddenOptions.forEach(opt => {
+          if (opt instanceof HTMLElement) opt.hidden = true;
+        });
+
+        showMoreBtn.addEventListener('click', () => {
+          const showMoreText = showMoreBtn.querySelector('[data-show-more-text]');
+          const showLessText = showMoreBtn.querySelector('[data-show-less-text]');
+          // Check if currently collapsed (showMoreText visible means collapsed)
+          const isCollapsed = showMoreText instanceof HTMLElement && !showMoreText.hidden;
+
+          // Toggle: if collapsed, expand (hidden=false); if expanded, collapse (hidden=true)
+          hiddenOptions.forEach(opt => {
+            if (opt instanceof HTMLElement) opt.hidden = !isCollapsed;
+          });
+
+          // Swap button text
+          if (showMoreText instanceof HTMLElement) showMoreText.hidden = isCollapsed;
+          if (showLessText instanceof HTMLElement) showLessText.hidden = !isCollapsed;
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initFilterCards);
+  document.addEventListener('astro:page-load', initFilterCards);
+</script>
+
+<style>
+  .filter-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .filter-card {
+    background: var(--sl-color-gray-6);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .filter-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.15s ease;
+  }
+
+  .filter-card__header:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  .filter-card__title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sl-color-text);
+    margin: 0;
+    flex: 1;
+  }
+
+  .filter-card__badge {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--sl-color-gray-2);
+    background: var(--sl-color-gray-5);
+    padding: 0.125rem 0.5rem;
+    border-radius: 1rem;
+  }
+
+  .filter-card__chevron {
+    color: var(--sl-color-gray-3);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .filter-card__header[aria-expanded="false"] .filter-card__chevron {
+    transform: rotate(-90deg);
+  }
+
+  .filter-card__body {
+    padding: 0 1rem 0.75rem;
+  }
+
+  .filter-card__body[hidden] {
+    display: none;
+  }
+
+  .filter-group__options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease;
+    margin: 0 -0.5rem;
+  }
+
+  .filter-checkbox[hidden] {
+    display: none;
+  }
+
+  .filter-checkbox:hover {
+    background: var(--sl-color-gray-5);
+  }
+
+  .filter-checkbox input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .filter-checkbox__indicator {
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 1.5px solid var(--sl-color-gray-3);
+    border-radius: 0.1875rem;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .filter-checkbox__indicator::after {
+    content: '';
+    width: 0.4375rem;
+    height: 0.4375rem;
+    background: var(--sl-color-accent);
+    border-radius: 0.0625rem;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.15s ease;
+  }
+
+  .filter-checkbox input:checked + .filter-checkbox__indicator {
+    border-color: var(--sl-color-accent);
+  }
+
+  .filter-checkbox input:checked + .filter-checkbox__indicator::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .filter-checkbox__label {
+    font-size: 0.8125rem;
+    color: var(--sl-color-text);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .filter-checkbox__count {
+    font-size: 0.6875rem;
+    color: var(--sl-color-gray-3);
+    background: var(--sl-color-gray-5);
+    padding: 0.0625rem 0.375rem;
+    border-radius: 1rem;
+    min-width: 1.25rem;
+    text-align: center;
+  }
+
+  .filter-card__show-more {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.375rem 0.5rem;
+    background: none;
+    border: 1px dashed var(--sl-color-gray-4);
+    border-radius: 0.25rem;
+    color: var(--sl-color-gray-2);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-card__show-more:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent);
+  }
+</style>

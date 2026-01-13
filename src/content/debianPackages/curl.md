@@ -1,4 +1,0 @@
----
-name: curl
-category: Networking
----

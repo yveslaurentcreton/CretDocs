@@ -1,0 +1,59 @@
+---
+---
+
+<button
+  class="width-toggle"
+  data-width-toggle
+  aria-label="Toggle page width"
+  title="Toggle between contained and full width"
+>
+  <svg class="width-toggle__icon width-toggle__icon--contained" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+    <path d="M4 4h16v2H4V4zm2 6h12v2H6v-2zm-2 6h16v2H4v-2z"/>
+  </svg>
+  <svg class="width-toggle__icon width-toggle__icon--full" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+    <path d="M2 4h20v2H2V4zm0 6h20v2H2v-2zm0 6h20v2H2v-2z"/>
+  </svg>
+</button>
+
+<style is:global>
+  /* Width toggle CSS overrides */
+  .layout-full-width {
+    --sl-content-width: 100%;
+  }
+
+  .layout-full-width .content-panel {
+    max-width: none;
+  }
+</style>
+
+<style>
+  .width-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--sl-color-gray-2);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease;
+  }
+
+  .width-toggle:hover {
+    color: var(--sl-color-text);
+  }
+
+  .width-toggle__icon {
+    display: none;
+  }
+
+  .width-toggle[data-state="contained"] .width-toggle__icon--contained,
+  .width-toggle:not([data-state]) .width-toggle__icon--contained {
+    display: block;
+  }
+
+  .width-toggle[data-state="full"] .width-toggle__icon--full {
+    display: block;
+  }
+</style>
