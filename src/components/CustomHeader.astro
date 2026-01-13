@@ -7,10 +7,20 @@ import WidthToggle from './WidthToggle.astro';
   <slot />
 </Default>
 
-<!-- Render the toggle button hidden, then move it via script -->
+<!-- Button template for injection -->
 <div id="width-toggle-source" hidden>
   <WidthToggle />
 </div>
+
+<!-- Apply layout preference immediately to prevent flash -->
+<script is:inline>
+  (function() {
+    var savedPref = localStorage.getItem('cretdocs-width-preference');
+    if (savedPref === 'full') {
+      document.documentElement.classList.add('layout-full-width');
+    }
+  })();
+</script>
 
 <script>
   const STORAGE_KEY = 'cretdocs-width-preference';
@@ -27,39 +37,28 @@ import WidthToggle from './WidthToggle.astro';
     const toggle = source?.querySelector('.width-toggle');
     if (!toggle) return;
 
-    // Check if already injected (for view transitions)
+    // Check if already injected
     if (document.querySelector('.width-toggle-wrapper .width-toggle')) {
       source?.remove();
       return;
     }
 
-    // Find the right-group in the header
     const rightGroup = document.querySelector('header .right-group, header [class*="right"]');
     if (!rightGroup) return;
 
-    // Clone and set up the button
     const clonedToggle = toggle.cloneNode(true) as HTMLElement;
-
-    // Load saved preference and update state
-    const savedPref = localStorage.getItem(STORAGE_KEY);
-    if (savedPref === 'full') {
-      document.documentElement.classList.add(FULL_WIDTH_CLASS);
-    }
     updateButtonState(clonedToggle);
 
-    // Attach click handler
     clonedToggle.addEventListener('click', () => {
       const isFullWidth = document.documentElement.classList.toggle(FULL_WIDTH_CLASS);
       localStorage.setItem(STORAGE_KEY, isFullWidth ? 'full' : 'contained');
       updateButtonState(clonedToggle);
     });
 
-    // Create wrapper with separator
     const wrapper = document.createElement('div');
     wrapper.className = 'width-toggle-wrapper';
     wrapper.appendChild(clonedToggle);
 
-    // Insert before LanguageSelect if it exists, otherwise at the end
     const langSelect = rightGroup.querySelector('starlight-lang-select');
     if (langSelect) {
       rightGroup.insertBefore(wrapper, langSelect);
@@ -67,7 +66,6 @@ import WidthToggle from './WidthToggle.astro';
       rightGroup.appendChild(wrapper);
     }
 
-    // Clean up the source
     source?.remove();
   }
 
