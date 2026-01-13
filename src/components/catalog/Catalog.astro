@@ -1,0 +1,198 @@
+---
+import type { SoftwareEntry } from '../../lib/software';
+import { getAllTags, getEntrySlugs, categorizeTags, getTagCounts, sortByName } from '../../lib/software';
+import FilterSidebar from './FilterSidebar.astro';
+import ItemGrid from './ItemGrid.astro';
+
+interface Props {
+  items: SoftwareEntry[];
+}
+
+const { items } = Astro.props;
+
+const slugs = getEntrySlugs(items);
+const allTags = getAllTags(items);
+const { linked, plain } = categorizeTags(allTags, slugs);
+const tagCounts = getTagCounts(items);
+const sortedItems = sortByName(items);
+---
+
+<div class="catalog" data-catalog>
+  <FilterSidebar linkedTags={linked} plainTags={plain} tagCounts={tagCounts} />
+
+  <main class="catalog__content">
+    <div class="catalog__header">
+      <span class="catalog__count" data-filter-count>
+        Showing {sortedItems.length} items
+      </span>
+      <button class="catalog__clear" data-clear-filters hidden>
+        Clear filters
+      </button>
+    </div>
+
+    <ItemGrid items={sortedItems} slugs={slugs} />
+  </main>
+</div>
+
+<script>
+  class CatalogFilter {
+    private items: NodeListOf<HTMLElement>;
+    private filterInputs: NodeListOf<HTMLInputElement>;
+    private countDisplay: HTMLElement | null;
+    private clearButton: HTMLElement | null;
+    private selectedTags: Set<string> = new Set();
+
+    constructor(container: HTMLElement) {
+      this.items = container.querySelectorAll('[data-software-item]');
+      this.filterInputs = container.querySelectorAll('[data-filter-tag]');
+      this.countDisplay = container.querySelector('[data-filter-count]');
+      this.clearButton = container.querySelector('[data-clear-filters]');
+
+      this.init();
+    }
+
+    private init(): void {
+      this.loadFromURL();
+      this.bindEvents();
+      this.applyFilters();
+    }
+
+    private loadFromURL(): void {
+      const params = new URLSearchParams(window.location.search);
+      const tags = params.get('tags')?.split(',').filter(Boolean) ?? [];
+      this.selectedTags = new Set(tags);
+
+      this.filterInputs.forEach(input => {
+        input.checked = this.selectedTags.has(input.value);
+      });
+    }
+
+    private saveToURL(): void {
+      const params = new URLSearchParams();
+
+      if (this.selectedTags.size > 0) {
+        params.set('tags', [...this.selectedTags].join(','));
+      }
+
+      const newURL = params.toString()
+        ? `${window.location.pathname}?${params.toString()}`
+        : window.location.pathname;
+
+      window.history.replaceState({}, '', newURL);
+    }
+
+    private bindEvents(): void {
+      this.filterInputs.forEach(input => {
+        input.addEventListener('change', () => this.handleFilterChange(input));
+      });
+
+      this.clearButton?.addEventListener('click', () => this.clearFilters());
+    }
+
+    private handleFilterChange(input: HTMLInputElement): void {
+      if (input.checked) {
+        this.selectedTags.add(input.value);
+      } else {
+        this.selectedTags.delete(input.value);
+      }
+
+      this.applyFilters();
+      this.saveToURL();
+    }
+
+    private applyFilters(): void {
+      let visibleCount = 0;
+
+      this.items.forEach(item => {
+        const itemTags: string[] = JSON.parse(item.dataset.tags ?? '[]');
+
+        const isVisible = this.selectedTags.size === 0 ||
+          itemTags.some(tag => this.selectedTags.has(tag));
+
+        item.style.display = isVisible ? '' : 'none';
+
+        if (isVisible) visibleCount++;
+      });
+
+      this.updateCount(visibleCount);
+      this.updateClearButton();
+    }
+
+    private updateCount(count: number): void {
+      if (this.countDisplay) {
+        this.countDisplay.textContent = `Showing ${count} item${count !== 1 ? 's' : ''}`;
+      }
+    }
+
+    private updateClearButton(): void {
+      if (this.clearButton) {
+        this.clearButton.hidden = this.selectedTags.size === 0;
+      }
+    }
+
+    private clearFilters(): void {
+      this.selectedTags.clear();
+
+      this.filterInputs.forEach(input => {
+        input.checked = false;
+      });
+
+      this.applyFilters();
+      this.saveToURL();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const catalog = document.querySelector('[data-catalog]');
+    if (catalog instanceof HTMLElement) {
+      new CatalogFilter(catalog);
+    }
+  });
+</script>
+
+<style>
+  .catalog {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+  }
+
+  .catalog__content {
+    min-width: 0;
+  }
+
+  .catalog__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .catalog__count {
+    color: var(--sl-color-gray-2);
+    font-size: 0.875rem;
+  }
+
+  .catalog__clear {
+    background: none;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    color: var(--sl-color-text);
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: background-color 0.15s ease;
+  }
+
+  .catalog__clear:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  @media (max-width: 768px) {
+    .catalog {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

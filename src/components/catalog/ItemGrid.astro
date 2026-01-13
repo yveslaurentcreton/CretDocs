@@ -1,0 +1,33 @@
+---
+import type { SoftwareEntry } from '../../lib/software';
+import ItemCard from './ItemCard.astro';
+
+interface Props {
+  items: SoftwareEntry[];
+  slugs: Set<string>;
+}
+
+const { items, slugs } = Astro.props;
+---
+
+<div class="item-grid" data-item-grid>
+  {items.map(item => (
+    <ItemCard
+      name={item.data.name}
+      slug={item.slug}
+      description={item.data.description}
+      externalLink={item.data.externalLink}
+      tags={item.data.tags}
+      render={item.data.render}
+      slugs={slugs}
+    />
+  ))}
+</div>
+
+<style>
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+</style>
