@@ -110,14 +110,17 @@ const { linkedTags, plainTags, tagCounts, initialVisibleCount = 5 } = Astro.prop
         showMoreBtn.addEventListener('click', () => {
           const showMoreText = showMoreBtn.querySelector('[data-show-more-text]');
           const showLessText = showMoreBtn.querySelector('[data-show-less-text]');
-          const isExpanded = showMoreText instanceof HTMLElement && showMoreText.hidden;
+          // Check if currently collapsed (showMoreText visible means collapsed)
+          const isCollapsed = showMoreText instanceof HTMLElement && !showMoreText.hidden;
 
+          // Toggle: if collapsed, expand (hidden=false); if expanded, collapse (hidden=true)
           hiddenOptions.forEach(opt => {
-            if (opt instanceof HTMLElement) opt.hidden = !isExpanded;
+            if (opt instanceof HTMLElement) opt.hidden = !isCollapsed;
           });
 
-          if (showMoreText instanceof HTMLElement) showMoreText.hidden = !isExpanded;
-          if (showLessText instanceof HTMLElement) showLessText.hidden = isExpanded;
+          // Swap button text
+          if (showMoreText instanceof HTMLElement) showMoreText.hidden = isCollapsed;
+          if (showLessText instanceof HTMLElement) showLessText.hidden = !isCollapsed;
         });
       }
     });
