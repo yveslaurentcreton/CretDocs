@@ -21,6 +21,8 @@ const detailUrl = render ? `${baseUrl}/toolbox/software/${slug}` : undefined;
   class="item-card"
   data-software-item
   data-tags={JSON.stringify(tags)}
+  data-name={name.toLowerCase()}
+  data-description={description?.toLowerCase() ?? ''}
 >
   <header class="item-card__header">
     <h3 class="item-card__name">

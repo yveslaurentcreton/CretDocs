@@ -15,6 +15,55 @@
   </svg>
 </button>
 
+<!-- Apply layout preference and button state immediately to prevent flash -->
+<script is:inline>
+  (function() {
+    var savedPref = localStorage.getItem('cretdocs-width-preference');
+    var isFullWidth = savedPref === 'full';
+    if (isFullWidth) {
+      document.documentElement.classList.add('layout-full-width');
+    }
+    // Set button state immediately when DOM is ready
+    var setButtonState = function() {
+      var buttons = document.querySelectorAll('.width-toggle');
+      buttons.forEach(function(btn) {
+        btn.setAttribute('data-state', isFullWidth ? 'full' : 'contained');
+        btn.setAttribute('aria-pressed', String(isFullWidth));
+      });
+    };
+    // Try immediately (for buttons already in DOM)
+    setButtonState();
+    // Also run when DOM is interactive (in case script runs before button)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setButtonState);
+    }
+  })();
+</script>
+
+<script>
+  const STORAGE_KEY = 'cretdocs-width-preference';
+  const FULL_WIDTH_CLASS = 'layout-full-width';
+
+  function initWidthToggle() {
+    document.querySelectorAll('.width-toggle').forEach((toggle) => {
+      // Avoid adding multiple listeners
+      if (toggle.hasAttribute('data-initialized')) return;
+      toggle.setAttribute('data-initialized', 'true');
+      
+      toggle.addEventListener('click', () => {
+        const isFullWidth = document.documentElement.classList.toggle(FULL_WIDTH_CLASS);
+        localStorage.setItem(STORAGE_KEY, isFullWidth ? 'full' : 'contained');
+        toggle.setAttribute('data-state', isFullWidth ? 'full' : 'contained');
+        toggle.setAttribute('aria-pressed', String(isFullWidth));
+      });
+    });
+  }
+
+  // Run on both events to ensure it works
+  document.addEventListener('DOMContentLoaded', initWidthToggle);
+  document.addEventListener('astro:page-load', initWidthToggle);
+</script>
+
 <style is:global>
   /* Width toggle CSS overrides */
   .layout-full-width {

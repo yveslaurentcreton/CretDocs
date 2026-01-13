@@ -3,6 +3,7 @@ import type { SoftwareEntry } from '../../lib/software';
 import { getAllTags, getEntrySlugs, categorizeTags, getTagCounts, sortByName } from '../../lib/software';
 import FilterSidebar from './FilterSidebar.astro';
 import ItemGrid from './ItemGrid.astro';
+import SearchBar from './SearchBar.astro';
 
 interface Props {
   items: SoftwareEntry[];
@@ -22,6 +23,10 @@ const sortedItems = sortByName(items);
   <FilterSidebar linkedTags={linked} plainTags={plain} tagCounts={tagCounts} />
 
   <main class="catalog__content">
+    <div class="catalog__search">
+      <SearchBar placeholder="Search by name or description..." />
+    </div>
+
     <div class="catalog__header">
       <span class="catalog__count" data-filter-count>
         Showing {sortedItems.length} items
@@ -57,6 +62,8 @@ const sortedItems = sortByName(items);
   class CatalogFilter {
     private allItems: HTMLElement[];
     private filterInputs: NodeListOf<HTMLInputElement>;
+    private searchInput: HTMLInputElement | null;
+    private searchClearBtn: HTMLElement | null;
     private countDisplay: HTMLElement | null;
     private clearButton: HTMLElement | null;
     private paginationNav: HTMLElement | null;
@@ -64,6 +71,10 @@ const sortedItems = sortByName(items);
     private nextBtn: HTMLButtonElement | null;
     private pageInfo: HTMLElement | null;
     private selectedTags: Set<string> = new Set();
+    private searchQuery: string = '';
+    private platformMode: 'any' | 'all' = 'any';
+    private tagMode: 'any' | 'all' = 'any';
+    private groupMode: 'any' | 'all' = 'any';
     private itemsPerPage: number;
     private currentPage: number = 1;
     private visibleItems: HTMLElement[] = [];
@@ -71,6 +82,8 @@ const sortedItems = sortByName(items);
     constructor(container: HTMLElement) {
       this.allItems = Array.from(container.querySelectorAll('[data-software-item]'));
       this.filterInputs = container.querySelectorAll('[data-filter-tag]');
+      this.searchInput = container.querySelector('[data-search-input]');
+      this.searchClearBtn = container.querySelector('[data-search-clear]');
       this.countDisplay = container.querySelector('[data-filter-count]');
       this.clearButton = container.querySelector('[data-clear-filters]');
       this.paginationNav = container.querySelector('[data-pagination]');
@@ -92,18 +105,44 @@ const sortedItems = sortByName(items);
       const params = new URLSearchParams(window.location.search);
       const tags = params.get('tags')?.split(',').filter(Boolean) ?? [];
       this.selectedTags = new Set(tags);
+      this.searchQuery = params.get('q') ?? '';
+      this.platformMode = (params.get('pm') as 'any' | 'all') || 'any';
+      this.tagMode = (params.get('tm') as 'any' | 'all') || 'any';
+      this.groupMode = (params.get('gm') as 'any' | 'all') || 'any';
       this.currentPage = parseInt(params.get('page') ?? '1', 10);
 
       this.filterInputs.forEach(input => {
         input.checked = this.selectedTags.has(input.value);
       });
+
+      if (this.searchInput) {
+        this.searchInput.value = this.searchQuery;
+      }
+      this.updateSearchClearButton();
+      this.syncModeToggles();
     }
 
     private saveToURL(): void {
       const params = new URLSearchParams();
 
+      if (this.searchQuery) {
+        params.set('q', this.searchQuery);
+      }
+
       if (this.selectedTags.size > 0) {
         params.set('tags', [...this.selectedTags].join(','));
+      }
+
+      if (this.platformMode !== 'any') {
+        params.set('pm', this.platformMode);
+      }
+
+      if (this.tagMode !== 'any') {
+        params.set('tm', this.tagMode);
+      }
+
+      if (this.groupMode !== 'any') {
+        params.set('gm', this.groupMode);
       }
 
       if (this.currentPage > 1) {
@@ -117,14 +156,107 @@ const sortedItems = sortByName(items);
       window.history.replaceState({}, '', newURL);
     }
 
+    private updateSearchClearButton(): void {
+      if (this.searchClearBtn) {
+        this.searchClearBtn.hidden = !this.searchQuery;
+      }
+    }
+
+    private syncModeToggles(): void {
+      // Sync platform mode toggle
+      const platformToggle = document.querySelector('[data-mode-toggle="platforms"]');
+      platformToggle?.querySelectorAll('[data-mode]').forEach(btn => {
+        const mode = (btn as HTMLElement).dataset.mode;
+        const isActive = mode === this.platformMode;
+        btn.classList.toggle('mode-toggle__btn--active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
+      });
+
+      // Sync tag mode toggle
+      const tagToggle = document.querySelector('[data-mode-toggle="tags"]');
+      tagToggle?.querySelectorAll('[data-mode]').forEach(btn => {
+        const mode = (btn as HTMLElement).dataset.mode;
+        const isActive = mode === this.tagMode;
+        btn.classList.toggle('mode-toggle__btn--active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
+      });
+
+      // Sync group mode toggle
+      const groupToggle = document.querySelector('[data-mode-toggle="groups"]');
+      groupToggle?.querySelectorAll('[data-mode]').forEach(btn => {
+        const mode = (btn as HTMLElement).dataset.mode;
+        const isActive = mode === this.groupMode;
+        btn.classList.toggle('mode-toggle__btn--active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
+      });
+    }
+
     private bindEvents(): void {
       this.filterInputs.forEach(input => {
         input.addEventListener('change', () => this.handleFilterChange(input));
       });
 
+      // Search input events
+      this.searchInput?.addEventListener('input', () => this.handleSearchInput());
+      this.searchClearBtn?.addEventListener('click', () => this.clearSearch());
+
+      // Mode toggle events (using event delegation on document)
+      document.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest('[data-mode]');
+        if (btn instanceof HTMLButtonElement) {
+          const toggle = btn.closest('[data-mode-toggle]');
+          const group = (toggle as HTMLElement)?.dataset.modeToggle;
+          const mode = btn.dataset.mode as 'any' | 'all';
+          if (group && mode) {
+            this.handleModeChange(group, mode);
+          }
+        }
+      });
+
       this.clearButton?.addEventListener('click', () => this.clearFilters());
       this.prevBtn?.addEventListener('click', () => this.goToPage(this.currentPage - 1));
       this.nextBtn?.addEventListener('click', () => this.goToPage(this.currentPage + 1));
+    }
+
+    private handleModeChange(group: string, mode: 'any' | 'all'): void {
+      let changed = false;
+
+      if (group === 'platforms' && this.platformMode !== mode) {
+        this.platformMode = mode;
+        changed = true;
+      } else if (group === 'tags' && this.tagMode !== mode) {
+        this.tagMode = mode;
+        changed = true;
+      } else if (group === 'groups' && this.groupMode !== mode) {
+        this.groupMode = mode;
+        changed = true;
+      }
+
+      if (changed) {
+        this.currentPage = 1;
+        this.syncModeToggles();
+        this.applyFilters();
+        this.saveToURL();
+      }
+    }
+
+    private handleSearchInput(): void {
+      this.searchQuery = this.searchInput?.value.toLowerCase().trim() ?? '';
+      this.currentPage = 1;
+      this.updateSearchClearButton();
+      this.applyFilters();
+      this.saveToURL();
+    }
+
+    private clearSearch(): void {
+      this.searchQuery = '';
+      if (this.searchInput) {
+        this.searchInput.value = '';
+      }
+      this.updateSearchClearButton();
+      this.currentPage = 1;
+      this.applyFilters();
+      this.saveToURL();
     }
 
     private handleFilterChange(input: HTMLInputElement): void {
@@ -139,12 +271,90 @@ const sortedItems = sortByName(items);
       this.saveToURL();
     }
 
+    private getSelectedTagsByGroup(): { platforms: Set<string>; tags: Set<string> } {
+      const platforms = new Set<string>();
+      const tags = new Set<string>();
+
+      this.filterInputs.forEach(input => {
+        if (input.checked) {
+          const group = input.dataset.tagGroup;
+          if (group === 'platforms') {
+            platforms.add(input.value);
+          } else {
+            tags.add(input.value);
+          }
+        }
+      });
+
+      return { platforms, tags };
+    }
+
+    private updateModeToggleVisibility(): void {
+      // Get selected counts per group
+      const { platforms, tags } = this.getSelectedTagsByGroup();
+
+      // Show platform mode toggle if 2+ platforms selected
+      const platformToggle = document.querySelector('[data-mode-toggle="platforms"]');
+      if (platformToggle instanceof HTMLElement) {
+        platformToggle.hidden = platforms.size < 2;
+      }
+
+      // Show tag mode toggle if 2+ tags selected
+      const tagToggle = document.querySelector('[data-mode-toggle="tags"]');
+      if (tagToggle instanceof HTMLElement) {
+        tagToggle.hidden = tags.size < 2;
+      }
+    }
+
     private applyFilters(): void {
-      // First, determine which items match the filter
+      this.updateModeToggleVisibility();
+
+      const { platforms, tags } = this.getSelectedTagsByGroup();
+
+      // First, determine which items match filters
       this.visibleItems = this.allItems.filter(item => {
         const itemTags: string[] = JSON.parse(item.dataset.tags ?? '[]');
-        return this.selectedTags.size === 0 ||
-          itemTags.some(tag => this.selectedTags.has(tag));
+
+        // Check platform filter
+        let matchesPlatforms: boolean;
+        if (platforms.size === 0) {
+          matchesPlatforms = true;
+        } else if (this.platformMode === 'all') {
+          matchesPlatforms = [...platforms].every(p => itemTags.includes(p));
+        } else {
+          matchesPlatforms = [...platforms].some(p => itemTags.includes(p));
+        }
+
+        // Check tag filter
+        let matchesTags: boolean;
+        if (tags.size === 0) {
+          matchesTags = true;
+        } else if (this.tagMode === 'all') {
+          matchesTags = [...tags].every(t => itemTags.includes(t));
+        } else {
+          matchesTags = [...tags].some(t => itemTags.includes(t));
+        }
+
+        // Combine groups based on groupMode
+        let matchesFilters: boolean;
+        if (platforms.size === 0 && tags.size === 0) {
+          matchesFilters = true;
+        } else if (platforms.size === 0) {
+          matchesFilters = matchesTags;
+        } else if (tags.size === 0) {
+          matchesFilters = matchesPlatforms;
+        } else if (this.groupMode === 'all') {
+          matchesFilters = matchesPlatforms && matchesTags;
+        } else {
+          matchesFilters = matchesPlatforms || matchesTags;
+        }
+
+        // Check search query
+        const matchesSearch = !this.searchQuery ||
+          (item.dataset.name?.includes(this.searchQuery) ?? false) ||
+          (item.dataset.description?.includes(this.searchQuery) ?? false);
+
+        return matchesFilters && matchesSearch;
       });
 
       // Calculate pagination
@@ -209,7 +419,7 @@ const sortedItems = sortByName(items);
 
     private updateClearButton(): void {
       if (this.clearButton) {
-        this.clearButton.hidden = this.selectedTags.size === 0;
+        this.clearButton.hidden = this.selectedTags.size === 0 && !this.searchQuery;
       }
     }
 
@@ -227,11 +437,21 @@ const sortedItems = sortByName(items);
 
     private clearFilters(): void {
       this.selectedTags.clear();
+      this.searchQuery = '';
+      this.platformMode = 'any';
+      this.tagMode = 'any';
+      this.groupMode = 'any';
       this.currentPage = 1;
 
       this.filterInputs.forEach(input => {
         input.checked = false;
       });
+
+      if (this.searchInput) {
+        this.searchInput.value = '';
+      }
+      this.updateSearchClearButton();
+      this.syncModeToggles();
 
       this.applyFilters();
       this.saveToURL();
@@ -258,6 +478,11 @@ const sortedItems = sortByName(items);
 
   .catalog__content {
     min-width: 0;
+    margin-top: 0;
+  }
+
+  .catalog__search {
+    margin-bottom: 1rem;
   }
 
   .catalog__header {
@@ -299,13 +524,20 @@ const sortedItems = sortByName(items);
     border-top: 1px solid var(--sl-color-gray-5);
   }
 
+  .catalog__pagination > * {
+    margin: 0;
+    vertical-align: middle;
+  }
+
   .catalog__pagination[hidden] {
     display: none;
   }
 
   .pagination__btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    align-self: center;
+    justify-content: center;
     gap: 0.375rem;
     padding: 0.5rem 0.875rem;
     background: var(--sl-color-gray-6);
@@ -313,8 +545,16 @@ const sortedItems = sortByName(items);
     border-radius: 0.375rem;
     color: var(--sl-color-text);
     font-size: 0.8125rem;
+    line-height: 1;
     cursor: pointer;
     transition: all 0.15s ease;
+    min-width: 6.5rem;
+    height: 2.25rem;
+    margin: 0;
+  }
+
+  .pagination__btn svg {
+    flex-shrink: 0;
   }
 
   .pagination__btn:hover:not(:disabled) {
@@ -328,10 +568,16 @@ const sortedItems = sortByName(items);
   }
 
   .pagination__info {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
     font-size: 0.8125rem;
     color: var(--sl-color-gray-2);
     min-width: 6rem;
     text-align: center;
+    height: 2.25rem;
+    margin: 0;
   }
 
   @media (max-width: 768px) {

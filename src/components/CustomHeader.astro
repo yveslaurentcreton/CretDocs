@@ -1,83 +1,88 @@
 ---
-import Default from '@astrojs/starlight/components/Header.astro';
+import config from 'virtual:starlight/user-config';
+import LanguageSelect from '@astrojs/starlight/components/LanguageSelect.astro';
+import Search from '@astrojs/starlight/components/Search.astro';
+import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
+import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
+import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
 import WidthToggle from './WidthToggle.astro';
+
+const shouldRenderSearch =
+  config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
 ---
 
-<Default {...Astro.props}>
-  <slot />
-</Default>
-
-<!-- Button template for injection -->
-<div id="width-toggle-source" hidden>
-  <WidthToggle />
+<div class="header">
+  <div class="title-wrapper sl-flex">
+    <SiteTitle />
+  </div>
+  <div class="sl-flex print:hidden">
+    {shouldRenderSearch && <Search />}
+  </div>
+  <div class="sl-hidden md:sl-flex print:hidden right-group">
+    <div class="sl-flex social-icons">
+      <SocialIcons />
+    </div>
+    <WidthToggle />
+    <ThemeSelect />
+    <LanguageSelect />
+  </div>
 </div>
 
-<!-- Apply layout preference immediately to prevent flash -->
-<script is:inline>
-  (function() {
-    var savedPref = localStorage.getItem('cretdocs-width-preference');
-    if (savedPref === 'full') {
-      document.documentElement.classList.add('layout-full-width');
-    }
-  })();
-</script>
-
-<script>
-  const STORAGE_KEY = 'cretdocs-width-preference';
-  const FULL_WIDTH_CLASS = 'layout-full-width';
-
-  function updateButtonState(button: Element) {
-    const isFullWidth = document.documentElement.classList.contains(FULL_WIDTH_CLASS);
-    button.setAttribute('data-state', isFullWidth ? 'full' : 'contained');
-    button.setAttribute('aria-pressed', String(isFullWidth));
-  }
-
-  function injectWidthToggle() {
-    const source = document.getElementById('width-toggle-source');
-    const toggle = source?.querySelector('.width-toggle');
-    if (!toggle) return;
-
-    // Check if already injected
-    if (document.querySelector('.width-toggle-wrapper .width-toggle')) {
-      source?.remove();
-      return;
+<style>
+  @layer starlight.core {
+    .header {
+      gap: var(--sl-nav-gap);
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
     }
 
-    const rightGroup = document.querySelector('header .right-group, header [class*="right"]');
-    if (!rightGroup) return;
-
-    const clonedToggle = toggle.cloneNode(true) as HTMLElement;
-    updateButtonState(clonedToggle);
-
-    clonedToggle.addEventListener('click', () => {
-      const isFullWidth = document.documentElement.classList.toggle(FULL_WIDTH_CLASS);
-      localStorage.setItem(STORAGE_KEY, isFullWidth ? 'full' : 'contained');
-      updateButtonState(clonedToggle);
-    });
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'width-toggle-wrapper';
-    wrapper.appendChild(clonedToggle);
-
-    const langSelect = rightGroup.querySelector('starlight-lang-select');
-    if (langSelect) {
-      rightGroup.insertBefore(wrapper, langSelect);
-    } else {
-      rightGroup.appendChild(wrapper);
+    .header {
+      display: flex;
+      gap: var(--sl-nav-gap);
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
     }
 
-    source?.remove();
-  }
+    .title-wrapper {
+      overflow: clip;
+      padding: 0.25rem;
+      margin: -0.25rem;
+      min-width: 0;
+    }
 
-  document.addEventListener('DOMContentLoaded', injectWidthToggle);
-  document.addEventListener('astro:page-load', injectWidthToggle);
-</script>
+    .right-group,
+    .social-icons {
+      gap: 1rem;
+      align-items: center;
+    }
+    .right-group {
+      justify-content: flex-end;
+    }
+    .social-icons::after {
+      content: '';
+      height: 2rem;
+      border-inline-end: 1px solid var(--sl-color-gray-5);
+    }
 
-<style is:global>
-  .width-toggle-wrapper {
-    display: flex;
-    align-items: center;
-    padding-inline-start: 1rem;
-    border-inline-start: 1px solid var(--sl-color-gray-5);
+    @media (min-width: 50rem) {
+      :global(:root[data-has-sidebar]) {
+        --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+      }
+      :global(:root:not([data-has-toc])) {
+        --__toc-width: 0rem;
+      }
+      .header {
+        --__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+        --__toc-width: var(--sl-sidebar-width);
+        display: grid;
+        grid-template-columns: minmax(0, var(--__sidebar-width)) minmax(0, 1fr) minmax(
+            0,
+            var(--__toc-width)
+          );
+        align-content: center;
+      }
+    }
   }
 </style>

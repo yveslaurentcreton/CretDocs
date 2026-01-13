@@ -7,10 +7,5 @@ const software = await getCollection('software');
 ---
 
 <StarlightPage frontmatter={{ title: 'Software Catalog', tableOfContents: false }}>
-  <p>
-    Browse software, tools, extensions, and platforms. Use the filters to narrow down by platform or tag.
-    Click on a platform tag to see its details and all related software.
-  </p>
-
   <Catalog items={software} />
 </StarlightPage>
