@@ -19,7 +19,7 @@ export function getAllTags(entries: SoftwareEntry[]): string[] {
  * Get all entry slugs for quick lookup
  */
 export function getEntrySlugs(entries: SoftwareEntry[]): Set<string> {
-  return new Set(entries.map(e => e.slug));
+  return new Set(entries.map(e => e.id));
 }
 
 /**
@@ -83,7 +83,7 @@ export function getEntryBySlug(
   slug: string,
   entries: SoftwareEntry[]
 ): SoftwareEntry | undefined {
-  return entries.find(e => e.slug === slug);
+  return entries.find(e => e.id === slug);
 }
 
 /**

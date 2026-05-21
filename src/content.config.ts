@@ -1,12 +1,14 @@
 import { z, defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
 export const collections = {
-	docs: defineCollection({ schema: docsSchema() }),
+	docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
 
 	// Unified software collection
 	software: defineCollection({
-		type: 'content',
+		loader: glob({ pattern: '**/*.md', base: './src/content/software' }),
 		schema: z.object({
 			name: z.string(),
 			description: z.string().optional(),

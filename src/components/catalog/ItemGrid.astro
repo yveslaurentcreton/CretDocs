@@ -14,7 +14,7 @@ const { items, slugs } = Astro.props;
   {items.map(item => (
     <ItemCard
       name={item.data.name}
-      slug={item.slug}
+      slug={item.id}
       description={item.data.description}
       externalLink={item.data.externalLink}
       tags={item.data.tags}

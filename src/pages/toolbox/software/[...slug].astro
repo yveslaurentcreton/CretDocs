@@ -1,7 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { Icon } from '@astrojs/starlight/components';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Tag from '../../../components/catalog/Tag.astro';
 import ItemCard from '../../../components/catalog/ItemCard.astro';
 import { getEntrySlugs, getUsedBy } from '../../../lib/software';
@@ -10,17 +10,17 @@ export async function getStaticPaths() {
   const software = await getCollection('software', ({ data }) => data.render);
 
   return software.map(entry => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 const allSoftware = await getCollection('software');
 const slugs = getEntrySlugs(allSoftware);
-const usedBy = getUsedBy(entry.slug, allSoftware);
+const usedBy = getUsedBy(entry.id, allSoftware);
 ---
 
 <StarlightPage frontmatter={{ title: entry.data.name }}>
@@ -60,7 +60,7 @@ const usedBy = getUsedBy(entry.slug, allSoftware);
           {usedBy.map(item => (
             <ItemCard
               name={item.data.name}
-              slug={item.slug}
+              slug={item.id}
               description={item.data.description}
               externalLink={item.data.externalLink}
               tags={item.data.tags}

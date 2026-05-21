@@ -22,19 +22,19 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Introduction',
-					autogenerate: { directory: 'introduction' },
+					items: [{ autogenerate: { directory: 'introduction' } }],
 				},
 				{
 					label: 'Cheatsheets',
-					autogenerate: { directory: 'cheatsheets' },
+					items: [{ autogenerate: { directory: 'cheatsheets' } }],
 				},
 				{
 					label: 'Guides',
-					autogenerate: { directory: 'guides' },
+					items: [{ autogenerate: { directory: 'guides' } }],
 				},
 				{
 					label: 'Templates',
-					autogenerate: { directory: 'templates' },
+					items: [{ autogenerate: { directory: 'templates' } }],
 				},
 				{
 					label: 'Toolbox',
